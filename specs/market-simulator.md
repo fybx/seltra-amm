@@ -436,6 +436,36 @@ class VolumeGenerator:
         )
         
         return max(total_volume, 1000)  # Minimum volume floor
+
+class AlgoHackVolumeGenerator(VolumeGenerator):
+    """Specialized volume generator for ALGO-HACK trading pair."""
+    
+    def __init__(self, base_volume: float = 50000):  # Lower base for crypto
+        super().__init__(base_volume)
+        self.crypto_multipliers = self._create_crypto_multipliers()
+        
+    def _create_crypto_multipliers(self) -> dict:
+        """Create crypto-specific volume patterns."""
+        return {
+            "stable": 0.8,      # Lower volume during stable periods
+            "volatile": 2.5,    # High volume during volatility  
+            "launch": 5.0,      # Extreme volume during token launch
+            "crash": 3.0,       # Panic trading volume
+            "weekend": 0.4      # Reduced weekend crypto trading
+        }
+        
+    def generate_algo_hack_volume(
+        self,
+        market_condition: str,
+        price_volatility: float,
+        time_factor: float = 1.0
+    ) -> float:
+        """Generate volume specific to ALGO-HACK conditions."""
+        base = self.base_volume * time_factor
+        condition_multiplier = self.crypto_multipliers.get(market_condition, 1.0)
+        volatility_multiplier = 1 + (price_volatility * 8)  # Crypto vol correlation
+        
+        return base * condition_multiplier * volatility_multiplier
 ```
 
 ## Scenario Definitions
@@ -498,6 +528,45 @@ class MarketScenarios:
             "spike_frequency": 0.02,
             "spike_magnitude": 10.0,
             "description": "Large trader activity causing volume spikes"
+        },
+        
+        # ALGO-HACK Specific Scenarios
+        "algo_hack_stable": {
+            "model": "mean_reverting",
+            "mean_price": None,  # Use current price
+            "reversion_speed": 0.1,
+            "volatility": 0.015,
+            "drift": 0.0001,
+            "description": "Stable ALGO-HACK parity with mean reversion"
+        },
+        
+        "algo_hack_volatile": {
+            "model": "jump_diffusion",
+            "volatility": 0.05,
+            "jump_intensity": 0.03,
+            "jump_mean": 0.0,
+            "jump_std": 0.04,
+            "drift": 0.0002,
+            "description": "High volatility ALGO-HACK with crypto-style jumps"
+        },
+        
+        "hack_token_launch": {
+            "model": "trending",
+            "drift": 0.008,
+            "volatility": 0.08,
+            "volume_multiplier": 4.0,
+            "launch_dynamics": True,
+            "description": "HACK token launch with strong upward trend"
+        },
+        
+        "algo_hack_crash": {
+            "model": "jump_diffusion",
+            "volatility": 0.12,
+            "jump_intensity": 0.1,
+            "jump_mean": -0.15,
+            "jump_std": 0.05,
+            "drift": -0.002,
+            "description": "Flash crash scenario with large downward movements"
         }
     }
     

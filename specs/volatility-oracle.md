@@ -391,6 +391,10 @@ MAX_VOLATILITY = 10000           # Maximum 100% volatility
 LOW_VOLATILITY_THRESHOLD = 200   # 2% volatility
 HIGH_VOLATILITY_THRESHOLD = 800  # 8% volatility
 
+# ALGO-HACK Specific Thresholds (higher for crypto)
+ALGO_HACK_LOW_VOLATILITY = 400   # 4% volatility (crypto baseline)
+ALGO_HACK_HIGH_VOLATILITY = 1500 # 15% volatility (crypto high threshold)
+
 # Confidence Scoring
 MIN_CONFIDENCE_UPDATES = 5       # Minimum updates for reliable calculation
 CONFIDENCE_DECAY_RATE = 100      # Confidence decay per hour without updates
@@ -398,6 +402,47 @@ CONFIDENCE_DECAY_RATE = 100      # Confidence decay per hour without updates
 # Safety Limits
 MAX_PRICE_CHANGE = 1000          # Maximum 10% price change per update
 MAX_HISTORY_SIZE = 50            # Maximum price history length
+
+# ALGO-HACK Specific Configuration
+ALGO_HACK_VOLATILITY_CONFIG = {
+    # Adjusted parameters for crypto volatility patterns
+    "WINDOW_SIZE": 15,                    # Shorter window for faster adaptation
+    "ALPHA": 4000,                        # 0.4 (more responsive EWMA)
+    "REBALANCE_THRESHOLD": 100,           # 1% change triggers rebalance
+    "MIN_UPDATE_INTERVAL": 15,            # 15 seconds (faster updates)
+    
+    # Crypto-appropriate thresholds
+    "LOW_VOLATILITY_THRESHOLD": 400,      # 4% (crypto low)
+    "HIGH_VOLATILITY_THRESHOLD": 1500,    # 15% (crypto high)
+    
+    # Higher price change tolerance
+    "MAX_PRICE_CHANGE": 3000,             # 30% max change (crypto markets)
+    "EXTREME_VOLATILITY_THRESHOLD": 2500, # 25% extreme volatility
+    
+    # Enhanced confidence scoring
+    "MIN_CONFIDENCE_UPDATES": 3,          # Faster confidence building
+    "CONFIDENCE_DECAY_RATE": 150,         # Faster confidence decay
+    
+    # Regime switching parameters
+    "REGIME_PERSISTENCE": 5,              # Regime must persist 5 updates
+    "VOLATILITY_SMOOTHING": 0.7,          # Smooth volatility estimates
+}
+
+def classify_algo_hack_regime(volatility: int) -> int:
+    """
+    Classify volatility regime for ALGO-HACK pair.
+    
+    Returns:
+        0: Low volatility (< 4%)
+        1: Medium volatility (4-15%) 
+        2: High volatility (> 15%)
+    """
+    if volatility < ALGO_HACK_LOW_VOLATILITY:
+        return 0
+    elif volatility < ALGO_HACK_HIGH_VOLATILITY:
+        return 1
+    else:
+        return 2
 ```
 
 ## Error Codes

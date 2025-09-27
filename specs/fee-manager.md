@@ -492,6 +492,14 @@ TIER_THRESHOLDS = [
     10000000  # $10M for Tier 4
 ]
 
+# ALGO-HACK Specific Tier Thresholds (in ALGO)
+ALGO_HACK_TIER_THRESHOLDS = [
+    50_000_000_000,    # 50K ALGO for Tier 1 (≈$10K at $0.20/ALGO)
+    500_000_000_000,   # 500K ALGO for Tier 2 (≈$100K)
+    5_000_000_000_000, # 5M ALGO for Tier 3 (≈$1M)
+    50_000_000_000_000 # 50M ALGO for Tier 4 (≈$10M)
+]
+
 # Tier Discounts (basis points)
 TIER_DISCOUNTS = [
     500,   # 5% discount for Tier 1
@@ -503,6 +511,32 @@ TIER_DISCOUNTS = [
 # Volume Decay
 DEFAULT_DECAY_RATE = 50  # 0.5% per hour
 MAX_VOLUME_AGE = 2592000  # 30 days in seconds
+
+# ALGO-HACK Specific Configuration
+ALGO_HACK_FEE_CONFIG = {
+    # Adjusted for crypto market volatility
+    "BASE_FEE": 30,                    # 0.30% (same as default)
+    "MIN_FEE": 10,                     # 0.10% (higher floor for crypto)
+    "MAX_FEE": 500,                    # 5.00% (higher ceiling for extreme volatility)
+    
+    # More responsive to volatility changes
+    "VOLATILITY_MULTIPLIER": 7500,     # 0.75x (less sensitive than traditional)
+    "VOLUME_DISCOUNT_FACTOR": 3000,    # 0.3x (more aggressive discounts)
+    
+    # Crypto-specific volume threshold
+    "VOLUME_THRESHOLD": 25_000_000_000, # 25K ALGO threshold for max discount
+    
+    # Protocol fee share
+    "PROTOCOL_SHARE": 1000,            # 10% to protocol (same as default)
+    
+    # Tier configuration for ALGO-HACK
+    "USE_ALGO_TIERS": True,
+    "TIER_THRESHOLDS": ALGO_HACK_TIER_THRESHOLDS,
+    
+    # Enhanced decay for faster-moving crypto markets
+    "DECAY_RATE": 75,                  # 0.75% per hour (faster decay)
+    "REBALANCE_FEE_ADJUSTMENT": 200,   # 2% additional fee during rebalancing
+}
 ```
 
 ## Error Codes
