@@ -1,0 +1,33 @@
+FROM python:3.11-slim
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install AlgoKit
+RUN curl -fsSL https://github.com/algorandfoundation/algokit-cli/releases/latest/download/algokit-linux-amd64.tar.gz | tar -xz -C /usr/local/bin
+
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Install Algorand Python SDK
+RUN pip install py-algorand-sdk
+
+# Set working directory
+WORKDIR /workspace
+
+# Copy project files
+COPY . .
+
+# Create directories for contracts and simulation
+RUN mkdir -p contracts simulation scripts
+
+# Make scripts executable
+RUN chmod +x scripts/*.sh
+
+# Default command
+CMD ["/bin/bash"]

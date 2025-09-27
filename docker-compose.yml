@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  # AlgoKit Development Environment
+  algokit-dev:
+    image: node:20-alpine
+    container_name: seltra-algokit-dev
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - ALGORAND_NETWORK=localnet
+    command: >
+      sh -c "
+        apk add --no-cache python3 py3-pip git curl &&
+        curl -fsSL https://github.com/algorandfoundation/algokit-cli/releases/latest/download/algokit-linux-amd64.tar.gz | tar -xz -C /usr/local/bin &&
+        pip3 install -r requirements.txt &&
+        tail -f /dev/null
+      "
+    stdin_open: true
+    tty: true
+    ports:
+      - "0.0.0.0:4001:4001" # Algorand Node API (accessible via LAN)
+      - "0.0.0.0:4002:4002" # Algorand KMD API (accessible via LAN)
+      - "0.0.0.0:8980:8980" # Algorand Indexer API (accessible via LAN)

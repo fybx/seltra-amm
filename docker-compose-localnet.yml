@@ -1,0 +1,71 @@
+version: "3.8"
+
+services:
+  # Algorand Node (algod)
+  algod:
+    image: algorand/stable:latest
+    container_name: seltra-algod
+    ports:
+      - "0.0.0.0:4001:4001" # Algorand REST API (accessible via LAN)
+      - "0.0.0.0:4002:4002" # KMD API (accessible via LAN)
+    environment:
+      - ALGORAND_NETWORK=devnet
+      - ALGORAND_DATA=/opt/algorand/node/data
+    volumes:
+      - algod-data:/opt/algorand/node/data
+    command: >
+      sh -c "
+        /opt/algorand/node/goal node start -d /opt/algorand/node/data &&
+        tail -f /opt/algorand/node/data/node.log
+      "
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4001/v2/status"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # Algorand Indexer
+  indexer:
+    image: algorand/indexer:latest
+    container_name: seltra-indexer
+    ports:
+      - "0.0.0.0:8980:8980" # Indexer API (accessible via LAN)
+    environment:
+      - ALGORAND_NODE=http://algod:4001
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=algorand
+      - POSTGRES_PASSWORD=algorand
+      - POSTGRES_DB=indexer
+    depends_on:
+      - postgres
+      - algod
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8980/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # PostgreSQL for Indexer
+  postgres:
+    image: postgres:13
+    container_name: seltra-postgres
+    environment:
+      - POSTGRES_USER=algorand
+      - POSTGRES_PASSWORD=algorand
+      - POSTGRES_DB=indexer
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U algorand"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  algod-data:
+    driver: local
+  postgres-data:
+    driver: local
