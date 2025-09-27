@@ -337,6 +337,9 @@ def simplified_liquidity_amount(x, y, range_width):
 ### Q: How does "moving liquidity" actually work?
 **A:** System redistributes capital across different price ranges based on where trading activity occurs and volatility conditions.
 
+### Q: Is "best fit to minimize slippage" part of our promise?
+**A:** YES - this is a core promise achieved through Dynamic Liquidity Concentration. By concentrating more liquidity where trading actually happens, we naturally reduce slippage without needing complex routing algorithms. Target: <0.1% slippage for standard trades.
+
 ### Q: How to implement for hackathon with time constraints?
 **A:** Start with 3 static ranges, add simple volatility detection, and focus on visual demonstration of rebalancing.
 
