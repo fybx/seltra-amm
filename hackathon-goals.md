@@ -8,8 +8,13 @@ Current AMMs are capital inefficient and hurt both traders and liquidity provide
 
 ## how does it work
 Three core innovations working together:
-1. **Dynamic Liquidity Concentration**: When markets are calm, liquidity concentrates tightly around current price for better execution; when volatile, it spreads wider for protection.
+1. **Dynamic Liquidity Concentration**: When markets are calm, liquidity concentrates tightly around current price for better execution (achieving <0.1% slippage target); when volatile, it spreads wider for protection. This is our primary slippage minimization mechanism.
 2. **Smart Rebalancing**: The system watches where trading actually happens and moves liquidity there proactively, using predictive algorithms to pre-position capital.
 3. **Adaptive Fee Structure**: Fees automatically adjust from 0.05% in quiet markets to 0.30% during volatility, with volume discounts for large traders. A volatility oracle continuously measures market conditions and triggers these adaptations in real-time.
+
+## key promises
+- **Slippage Minimization**: <0.1% average slippage achieved through dynamic concentration (NOT just routing)
+- **Capital Efficiency**: 3-5x better than traditional AMMs
+- **Better LP Returns**: 15%+ APY through intelligent positioning
 
 # the real part
