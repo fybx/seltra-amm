@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13-alpine
+    container_name: seltra_postgres
+    environment:
+      POSTGRES_USER: algorand
+      POSTGRES_PASSWORD: algorand
+      POSTGRES_DB: indexer
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  algod:
+    image: algorand/algod:latest
+    container_name: seltra_algod
+    ports:
+      - "4001:8080"
+      - "4002:7833"
+    environment:
+      - ALGORAND_DATA=/opt/algorand/node/data
+    volumes:
+      - algod_data:/opt/algorand/node/data
+    command: ["goal", "node", "start", "-d", "/opt/algorand/node/data"]
+
+  indexer:
+    image: algorand/indexer:latest
+    container_name: seltra_indexer
+    ports:
+      - "8980:8980"
+    depends_on:
+      - postgres
+      - algod
+    command: >
+      algorand-indexer daemon 
+      --postgres "postgresql://algorand:algorand@postgres:5432/indexer?sslmode=disable" 
+      --algod-address "algod:8080" 
+      --algod-token "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      --server "0.0.0.0:8980"
+
+  market-simulator:
+    build:
+      context: .
+      dockerfile: simulation/Dockerfile
+    container_name: seltra_simulator
+    ports:
+      - "8001:8000"
+    environment:
+      - ALGORAND_ALGOD_ADDRESS=http://algod:8080
+      - ALGORAND_ALGOD_TOKEN=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    depends_on:
+      - algod
+    volumes:
+      - ./simulation:/app/simulation
+      - ./contracts:/app/contracts
+
+  frontend:
+    build: ./frontend
+    container_name: seltra_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_ALGOD_ADDRESS=http://localhost:4001
+      - REACT_APP_ALGOD_TOKEN=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      - REACT_APP_SIMULATOR_ADDRESS=http://localhost:8001
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+volumes:
+  postgres_data:
+  algod_data:

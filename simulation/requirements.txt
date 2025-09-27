@@ -1,0 +1,6 @@
+black
+fastapi
+pydantic
+py-algorand-sdk>=2.8.0
+uvicorn[standard]>=0.24.0
+numpy>=1.24.0
