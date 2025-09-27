@@ -1,1 +1,1 @@
-# Seltra AMM Market Simulation
+# Seltra Market Simulator Package
