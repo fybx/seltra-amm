@@ -27,10 +27,10 @@ A next-generation Automated Market Maker (AMM) built on Algorand that automatica
    make start
    ```
 
-3. **Enter development container:**
+3. **Generate your first contract:**
 
    ```bash
-   make shell
+   algokit generate contract seltra_pool
    ```
 
 4. **View available commands:**

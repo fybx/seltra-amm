@@ -34,68 +34,58 @@ help:
 # Environment setup
 setup:
 	@echo "🚀 Setting up Seltra AMM development environment..."
-	@chmod +x scripts/*.sh
-	@./scripts/setup.sh
+	@./setup.sh
 
-# Docker operations
+# LocalNet operations
 start:
-	@echo "🚀 Starting development environment..."
-	@./scripts/dev.sh start
+	@echo "🚀 Starting AlgoKit LocalNet..."
+	@algokit localnet start
 
 stop:
-	@echo "🛑 Stopping development environment..."
-	@./scripts/dev.sh stop
-
-restart:
-	@echo "🔄 Restarting development environment..."
-	@./scripts/dev.sh restart
+	@echo "🛑 Stopping AlgoKit LocalNet..."
+	@algokit localnet stop
 
 status:
-	@./scripts/dev.sh status
+	@echo "📊 LocalNet Status:"
+	@algokit localnet status
 
 clean:
 	@echo "🧹 Cleaning up..."
-	@./scripts/dev.sh clean
+	@algokit localnet stop
 
 # Development
-shell:
-	@./scripts/dev.sh shell
-
-logs:
-	@./scripts/dev.sh logs
-
-build:
-	@echo "🔨 Building development Docker image..."
-	@docker-compose build algokit-dev
+explore:
+	@echo "🌐 Opening AlgoKit Explorer..."
+	@algokit explore
 
 # Code quality
 lint:
 	@echo "🔍 Running code linting..."
-	@docker-compose exec algokit-dev flake8 contracts/ simulation/ scripts/
-	@docker-compose exec algokit-dev mypy contracts/ simulation/
+	@flake8 contracts/ simulation/ scripts/
+	@mypy contracts/ simulation/
 
 format:
 	@echo "🎨 Formatting code..."
-	@docker-compose exec algokit-dev black contracts/ simulation/ scripts/
+	@black contracts/ simulation/ scripts/
 
 # Testing and deployment
 test:
 	@echo "🧪 Running tests..."
-	@./scripts/dev.sh test
+	@python -m pytest tests/ -v
 
 deploy:
 	@echo "🚀 Deploying contracts..."
-	@./scripts/dev.sh deploy
+	@python scripts/deploy.py
 
 # Quick development cycle
-dev: start shell
+dev: start explore
 
 # Full setup for new developers
-init: setup start
+init: setup
 	@echo "✅ Development environment ready!"
-	@echo "Run 'make shell' to enter the development container"
+	@echo "Run 'algokit generate contract' to create your first contract"
 
 # Production deployment
 prod-deploy:
 	@echo "🚀 Deploying to production..."
-	@docker-compose exec algokit-dev python scripts/deploy.py --network mainnet
+	@python scripts/deploy.py --network mainnet

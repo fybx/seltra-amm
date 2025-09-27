@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seltra AMM - Intelligent Dynamic Liquidity AMM</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+      .card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      .status {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+      }
+      .status-item {
+        text-align: center;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+      }
+      .status-indicator {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin: 0 auto 10px;
+      }
+      .status-online {
+        background: #4ade80;
+      }
+      .status-offline {
+        background: #ef4444;
+      }
+      button {
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: all 0.3s ease;
+      }
+      button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🚀 Seltra AMM</h1>
+        <p>Intelligent Dynamic Liquidity AMM on Algorand</p>
+      </div>
+
+      <div class="card">
+        <h2>📊 Network Status</h2>
+        <div class="status">
+          <div class="status-item">
+            <div class="status-indicator status-online" id="algod-status"></div>
+            <h3>Algorand Node</h3>
+            <p>Port: 4001</p>
+            <p id="algod-info">Checking...</p>
+          </div>
+          <div class="status-item">
+            <div
+              class="status-indicator status-offline"
+              id="indexer-status"
+            ></div>
+            <h3>Indexer</h3>
+            <p>Port: 8980</p>
+            <p id="indexer-info">Checking...</p>
+          </div>
+          <div class="status-item">
+            <div
+              class="status-indicator status-offline"
+              id="contracts-status"
+            ></div>
+            <h3>Smart Contracts</h3>
+            <p>Deployed: 0</p>
+            <p id="contracts-info">Not deployed</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🛠️ Development Tools</h2>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+          "
+        >
+          <button onclick="openExplorer()">🌐 Open Explorer</button>
+          <button onclick="generateContract()">📝 Generate Contract</button>
+          <button onclick="runTests()">🧪 Run Tests</button>
+          <button onclick="deployContracts()">🚀 Deploy Contracts</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>📚 Quick Start</h2>
+        <ol>
+          <li>
+            Ensure AlgoKit LocalNet is running:
+            <code>algokit localnet start</code>
+          </li>
+          <li>
+            Generate your first contract:
+            <code>algokit generate contract seltra_pool</code>
+          </li>
+          <li>Start developing your AMM logic!</li>
+        </ol>
+      </div>
+    </div>
+
+    <script>
+      // Check network status
+      async function checkStatus() {
+        try {
+          const response = await fetch("http://localhost:4001/v2/status", {
+            headers: { "X-Algo-API-Token": "a" },
+          });
+          if (response.ok) {
+            document.getElementById("algod-status").className =
+              "status-indicator status-online";
+            document.getElementById("algod-info").textContent = "Connected";
+          }
+        } catch (error) {
+          document.getElementById("algod-status").className =
+            "status-indicator status-offline";
+          document.getElementById("algod-info").textContent = "Disconnected";
+        }
+
+        try {
+          const response = await fetch("http://localhost:8980/health");
+          if (response.ok) {
+            document.getElementById("indexer-status").className =
+              "status-indicator status-online";
+            document.getElementById("indexer-info").textContent = "Connected";
+          }
+        } catch (error) {
+          document.getElementById("indexer-status").className =
+            "status-indicator status-offline";
+          document.getElementById("indexer-info").textContent = "Disconnected";
+        }
+      }
+
+      function openExplorer() {
+        window.open("http://localhost:4001", "_blank");
+      }
+
+      function generateContract() {
+        alert("Run: algokit generate contract seltra_pool");
+      }
+
+      function runTests() {
+        alert("Run: python -m pytest tests/ -v");
+      }
+
+      function deployContracts() {
+        alert("Run: python scripts/deploy.py");
+      }
+
+      // Check status on load and every 30 seconds
+      checkStatus();
+      setInterval(checkStatus, 30000);
+    </script>
+  </body>
+</html>
