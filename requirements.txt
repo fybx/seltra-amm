@@ -1,6 +1,7 @@
 # Algorand Development Dependencies (Latest from dev.algorand.co)
 algokit-utils>=2.0.0
 py-algorand-sdk>=2.8.0
+algopy>=1.0.0
 
 # Development Tools
 pytest>=7.4.0

@@ -1,0 +1,1810 @@
+#pragma version 10
+#pragma typetrack false
+
+// smart_contracts.seltra_pool.contract.SeltraPoolContract.__algopy_entrypoint_with_init() -> uint64:
+main:
+    intcblock 0 1 1000000000000000000 2
+    bytecblock "current_price" "range1_liquidity" "range2_liquidity" "range3_liquidity" "is_initialized" "asset_x_id" "asset_y_id" 0x151f7c75 "total_liquidity" "total_lp_tokens" "range1_lower" "range1_upper" "range2_lower" "range2_upper" "range3_lower" "range3_upper" "current_fee_rate" "last_rebalance_time"
+    txn ApplicationID
+    bnz main_after_if_else@2
+    // smart_contracts/seltra_pool/contract.py:47-48
+    // # Pool Configuration
+    // self.asset_x_id = UInt64(0)
+    bytec 5 // "asset_x_id"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:49
+    // self.asset_y_id = UInt64(0)
+    bytec 6 // "asset_y_id"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:50
+    // self.current_price = UInt64(0)  # Fixed point
+    bytec_0 // "current_price"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:51
+    // self.total_liquidity = UInt64(0)
+    bytec 8 // "total_liquidity"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:52
+    // self.current_fee_rate = UInt64(DEFAULT_FEE_RATE)
+    bytec 16 // "current_fee_rate"
+    pushint 30 // 30
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:53
+    // self.last_rebalance_time = UInt64(0)
+    bytec 17 // "last_rebalance_time"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:54
+    // self.protocol_fees_x = UInt64(0)
+    pushbytes "protocol_fees_x"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:55
+    // self.protocol_fees_y = UInt64(0)
+    pushbytes "protocol_fees_y"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:57-58
+    // # Range 1: Tight (±5% around current price)
+    // self.range1_lower = UInt64(0)
+    bytec 10 // "range1_lower"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:59
+    // self.range1_upper = UInt64(0)
+    bytec 11 // "range1_upper"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:60
+    // self.range1_liquidity = UInt64(0)
+    bytec_1 // "range1_liquidity"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:62-63
+    // # Range 2: Medium (±15% around current price)
+    // self.range2_lower = UInt64(0)
+    bytec 12 // "range2_lower"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:64
+    // self.range2_upper = UInt64(0)
+    bytec 13 // "range2_upper"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:65
+    // self.range2_liquidity = UInt64(0)
+    bytec_2 // "range2_liquidity"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:67-68
+    // # Range 3: Wide (±30% around current price)
+    // self.range3_lower = UInt64(0)
+    bytec 14 // "range3_lower"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:69
+    // self.range3_upper = UInt64(0)
+    bytec 15 // "range3_upper"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:70
+    // self.range3_liquidity = UInt64(0)
+    bytec_3 // "range3_liquidity"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:72-73
+    // # Pool state
+    // self.is_initialized = False
+    bytec 4 // "is_initialized"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:74
+    // self.total_lp_tokens = UInt64(0)
+    bytec 9 // "total_lp_tokens"
+    intc_0 // 0
+    app_global_put
+
+main_after_if_else@2:
+    // smart_contracts/seltra_pool/contract.py:35
+    // class SeltraPoolContract(ARC4Contract):
+    txn NumAppArgs
+    bz main_bare_routing@12
+    pushbytess 0x82d5ee94 0x0743cba7 0x7f5cdd99 0xafcb64b8 0x331f6b45 0xb03a592e 0x5c80ba76 // method "initialize_pool(asset,asset,uint64)string", method "add_liquidity(asset,asset,uint64,uint64,uint64,uint64,uint64,uint64)string", method "remove_liquidity(uint64,uint64,uint64,uint64,uint64)string", method "swap(asset,asset,uint64,uint64,uint64)string", method "get_pool_info()string", method "get_range_info(uint64)string", method "calculate_swap_output(asset,asset,uint64)string"
+    txna ApplicationArgs 0
+    match main_initialize_pool_route@5 main_add_liquidity_route@6 main_remove_liquidity_route@7 main_swap_route@8 main_get_pool_info_route@9 main_get_range_info_route@10 main_calculate_swap_output_route@11
+
+main_after_if_else@14:
+    // smart_contracts/seltra_pool/contract.py:35
+    // class SeltraPoolContract(ARC4Contract):
+    intc_0 // 0
+    return
+
+main_calculate_swap_output_route@11:
+    // smart_contracts/seltra_pool/contract.py:533
+    // @abimethod()
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    // smart_contracts/seltra_pool/contract.py:35
+    // class SeltraPoolContract(ARC4Contract):
+    txna ApplicationArgs 1
+    btoi
+    txnas Assets
+    txna ApplicationArgs 2
+    btoi
+    txnas Assets
+    txna ApplicationArgs 3
+    btoi
+    // smart_contracts/seltra_pool/contract.py:533
+    // @abimethod()
+    callsub calculate_swap_output
+    bytec 7 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+main_get_range_info_route@10:
+    // smart_contracts/seltra_pool/contract.py:523
+    // @abimethod()
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    // smart_contracts/seltra_pool/contract.py:35
+    // class SeltraPoolContract(ARC4Contract):
+    txna ApplicationArgs 1
+    btoi
+    // smart_contracts/seltra_pool/contract.py:523
+    // @abimethod()
+    callsub get_range_info
+    bytec 7 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+main_get_pool_info_route@9:
+    // smart_contracts/seltra_pool/contract.py:515
+    // @abimethod()
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    callsub get_pool_info
+    bytec 7 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+main_swap_route@8:
+    // smart_contracts/seltra_pool/contract.py:274
+    // @abimethod()
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    // smart_contracts/seltra_pool/contract.py:35
+    // class SeltraPoolContract(ARC4Contract):
+    txna ApplicationArgs 1
+    btoi
+    txnas Assets
+    txna ApplicationArgs 2
+    btoi
+    txnas Assets
+    txna ApplicationArgs 3
+    btoi
+    txna ApplicationArgs 4
+    btoi
+    txna ApplicationArgs 5
+    btoi
+    // smart_contracts/seltra_pool/contract.py:274
+    // @abimethod()
+    callsub swap
+    bytec 7 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+main_remove_liquidity_route@7:
+    // smart_contracts/seltra_pool/contract.py:212
+    // @abimethod()
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    // smart_contracts/seltra_pool/contract.py:35
+    // class SeltraPoolContract(ARC4Contract):
+    txna ApplicationArgs 1
+    btoi
+    txna ApplicationArgs 2
+    btoi
+    txna ApplicationArgs 3
+    btoi
+    txna ApplicationArgs 4
+    btoi
+    txna ApplicationArgs 5
+    btoi
+    // smart_contracts/seltra_pool/contract.py:212
+    // @abimethod()
+    callsub remove_liquidity
+    bytec 7 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+main_add_liquidity_route@6:
+    // smart_contracts/seltra_pool/contract.py:135
+    // @abimethod()
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    // smart_contracts/seltra_pool/contract.py:35
+    // class SeltraPoolContract(ARC4Contract):
+    txna ApplicationArgs 1
+    btoi
+    txnas Assets
+    txna ApplicationArgs 2
+    btoi
+    txnas Assets
+    txna ApplicationArgs 3
+    btoi
+    txna ApplicationArgs 4
+    btoi
+    txna ApplicationArgs 5
+    btoi
+    txna ApplicationArgs 6
+    btoi
+    txna ApplicationArgs 7
+    btoi
+    txna ApplicationArgs 8
+    btoi
+    // smart_contracts/seltra_pool/contract.py:135
+    // @abimethod()
+    callsub add_liquidity
+    bytec 7 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+main_initialize_pool_route@5:
+    // smart_contracts/seltra_pool/contract.py:76
+    // @abimethod()
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    // smart_contracts/seltra_pool/contract.py:35
+    // class SeltraPoolContract(ARC4Contract):
+    txna ApplicationArgs 1
+    btoi
+    txnas Assets
+    txna ApplicationArgs 2
+    btoi
+    txnas Assets
+    txna ApplicationArgs 3
+    btoi
+    // smart_contracts/seltra_pool/contract.py:76
+    // @abimethod()
+    callsub initialize_pool
+    bytec 7 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+main_bare_routing@12:
+    // smart_contracts/seltra_pool/contract.py:35
+    // class SeltraPoolContract(ARC4Contract):
+    txn OnCompletion
+    bnz main_after_if_else@14
+    txn ApplicationID
+    !
+    assert // can only call when creating
+    intc_1 // 1
+    return
+
+
+// smart_contracts.seltra_pool.contract.SeltraPoolContract.initialize_pool(asset_x: uint64, asset_y: uint64, initial_price: uint64) -> bytes:
+initialize_pool:
+    // smart_contracts/seltra_pool/contract.py:76-82
+    // @abimethod()
+    // def initialize_pool(
+    //     self,
+    //     asset_x: Asset,
+    //     asset_y: Asset,
+    //     initial_price: UInt64,
+    // ) -> arc4.String:
+    proto 3 1
+    // smart_contracts/seltra_pool/contract.py:94-95
+    // # Ensure not already initialized
+    // assert not self.is_initialized, "Pool already initialized"
+    intc_0 // 0
+    bytec 4 // "is_initialized"
+    app_global_get_ex
+    assert // check self.is_initialized exists
+    !
+    assert // Pool already initialized
+    // smart_contracts/seltra_pool/contract.py:97-98
+    // # Validate assets
+    // assert asset_x.id != asset_y.id, "Assets must be different"
+    frame_dig -3
+    frame_dig -2
+    !=
+    assert // Assets must be different
+    // smart_contracts/seltra_pool/contract.py:99
+    // assert initial_price > UInt64(0), "Price must be positive"
+    frame_dig -1
+    assert // Price must be positive
+    // smart_contracts/seltra_pool/contract.py:101-102
+    // # Set pool configuration
+    // self.asset_x_id = asset_x.id
+    bytec 5 // "asset_x_id"
+    frame_dig -3
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:103
+    // self.asset_y_id = asset_y.id
+    bytec 6 // "asset_y_id"
+    frame_dig -2
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:104
+    // self.current_price = initial_price
+    bytec_0 // "current_price"
+    frame_dig -1
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:105
+    // self.last_rebalance_time = Global.latest_timestamp
+    bytec 17 // "last_rebalance_time"
+    global LatestTimestamp
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:120-121
+    // # Range 1: Tight range (±5% around current price)
+    // self.range1_lower = (price * UInt64(95)) // UInt64(100)
+    frame_dig -1
+    pushint 95 // 95
+    *
+    pushint 100 // 100
+    /
+    bytec 10 // "range1_lower"
+    swap
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:122
+    // self.range1_upper = (price * UInt64(105)) // UInt64(100)
+    frame_dig -1
+    pushint 105 // 105
+    *
+    pushint 100 // 100
+    /
+    bytec 11 // "range1_upper"
+    swap
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:123
+    // self.range1_liquidity = UInt64(0)
+    bytec_1 // "range1_liquidity"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:125-126
+    // # Range 2: Medium range (±15% around current price)
+    // self.range2_lower = (price * UInt64(85)) // UInt64(100)
+    frame_dig -1
+    pushint 85 // 85
+    *
+    pushint 100 // 100
+    /
+    bytec 12 // "range2_lower"
+    swap
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:127
+    // self.range2_upper = (price * UInt64(115)) // UInt64(100)
+    frame_dig -1
+    pushint 115 // 115
+    *
+    pushint 100 // 100
+    /
+    bytec 13 // "range2_upper"
+    swap
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:128
+    // self.range2_liquidity = UInt64(0)
+    bytec_2 // "range2_liquidity"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:130-131
+    // # Range 3: Wide range (±30% around current price)
+    // self.range3_lower = (price * UInt64(70)) // UInt64(100)
+    frame_dig -1
+    pushint 70 // 70
+    *
+    pushint 100 // 100
+    /
+    bytec 14 // "range3_lower"
+    swap
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:132
+    // self.range3_upper = (price * UInt64(130)) // UInt64(100)
+    frame_dig -1
+    pushint 130 // 130
+    *
+    pushint 100 // 100
+    /
+    bytec 15 // "range3_upper"
+    swap
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:133
+    // self.range3_liquidity = UInt64(0)
+    bytec_3 // "range3_liquidity"
+    intc_0 // 0
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:110
+    // self.is_initialized = True
+    bytec 4 // "is_initialized"
+    intc_1 // 1
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:112
+    // return arc4.String("Pool initialized successfully")
+    pushbytes 0x001d506f6f6c20696e697469616c697a6564207375636365737366756c6c79
+    retsub
+
+
+// smart_contracts.seltra_pool.contract.SeltraPoolContract.add_liquidity(asset_x: uint64, asset_y: uint64, amount_x_desired: uint64, amount_y_desired: uint64, amount_x_min: uint64, amount_y_min: uint64, range_id: uint64, deadline: uint64) -> bytes:
+add_liquidity:
+    // smart_contracts/seltra_pool/contract.py:135-146
+    // @abimethod()
+    // def add_liquidity(
+    //     self,
+    //     asset_x: Asset,
+    //     asset_y: Asset,
+    //     amount_x_desired: UInt64,
+    //     amount_y_desired: UInt64,
+    //     amount_x_min: UInt64,
+    //     amount_y_min: UInt64,
+    //     range_id: UInt64,  # 1, 2, or 3 for our static ranges
+    //     deadline: UInt64,
+    // ) -> arc4.String:
+    proto 8 1
+    pushbytes ""
+    dupn 9
+    // smart_contracts/seltra_pool/contract.py:163
+    // assert self.is_initialized, "Pool not initialized"
+    intc_0 // 0
+    bytec 4 // "is_initialized"
+    app_global_get_ex
+    assert // check self.is_initialized exists
+    assert // Pool not initialized
+    // smart_contracts/seltra_pool/contract.py:164
+    // assert Global.latest_timestamp <= deadline, "Deadline exceeded"
+    global LatestTimestamp
+    frame_dig -1
+    <=
+    assert // Deadline exceeded
+    // smart_contracts/seltra_pool/contract.py:165
+    // assert asset_x.id == self.asset_x_id, "Invalid asset X"
+    intc_0 // 0
+    bytec 5 // "asset_x_id"
+    app_global_get_ex
+    assert // check self.asset_x_id exists
+    frame_dig -8
+    ==
+    assert // Invalid asset X
+    // smart_contracts/seltra_pool/contract.py:166
+    // assert asset_y.id == self.asset_y_id, "Invalid asset Y"
+    intc_0 // 0
+    bytec 6 // "asset_y_id"
+    app_global_get_ex
+    assert // check self.asset_y_id exists
+    frame_dig -7
+    ==
+    assert // Invalid asset Y
+    // smart_contracts/seltra_pool/contract.py:167
+    // assert range_id >= UInt64(1) and range_id <= UInt64(3), "Invalid range ID"
+    frame_dig -2
+    bz add_liquidity_bool_false@3
+    frame_dig -2
+    pushint 3 // 3
+    <=
+    bz add_liquidity_bool_false@3
+    intc_1 // 1
+
+add_liquidity_bool_merge@4:
+    // smart_contracts/seltra_pool/contract.py:167
+    // assert range_id >= UInt64(1) and range_id <= UInt64(3), "Invalid range ID"
+    assert // Invalid range ID
+    // smart_contracts/seltra_pool/contract.py:169-170
+    // # Get range bounds based on range_id
+    // range_lower, range_upper = self._get_range_bounds(range_id)
+    frame_dig -2
+    callsub _get_range_bounds
+    frame_bury 6
+    dup
+    frame_bury 5
+    // smart_contracts/seltra_pool/contract.py:178
+    // self.current_price
+    intc_0 // 0
+    bytec_0 // "current_price"
+    app_global_get_ex
+    swap
+    dup
+    cover 2
+    frame_bury 4
+    assert // check self.current_price exists
+    // smart_contracts/seltra_pool/contract.py:432-433
+    // # Simplified calculation - maintain ratio based on current price position in range
+    // if price_current <= price_lower:
+    >=
+    bz add_liquidity_else_body@13
+    // smart_contracts/seltra_pool/contract.py:434-435
+    // # All in asset X
+    // return amount_x_desired, UInt64(0)
+    intc_0 // 0
+    frame_bury 1
+    frame_dig -6
+    frame_bury 0
+
+add_liquidity_after_inlined_smart_contracts.seltra_pool.contract.SeltraPoolContract._calculate_liquidity_amounts@16:
+    // smart_contracts/seltra_pool/contract.py:181-182
+    // # Validate minimum amounts
+    // assert actual_x >= amount_x_min, "Insufficient amount X"
+    frame_dig 0
+    dup
+    frame_dig -4
+    >=
+    assert // Insufficient amount X
+    // smart_contracts/seltra_pool/contract.py:183
+    // assert actual_y >= amount_y_min, "Insufficient amount Y"
+    frame_dig 1
+    frame_dig -3
+    >=
+    assert // Insufficient amount Y
+    // smart_contracts/seltra_pool/contract.py:191
+    // self.current_price
+    intc_0 // 0
+    bytec_0 // "current_price"
+    app_global_get_ex
+    bury 1
+    assert // check self.current_price exists
+    // smart_contracts/seltra_pool/contract.py:461-462
+    // # Simplified calculation - geometric mean of amounts
+    // if amount_x == UInt64(0):
+    bnz add_liquidity_else_body@19
+    frame_dig 1
+    frame_bury 3
+
+add_liquidity_after_inlined_smart_contracts.seltra_pool.contract.SeltraPoolContract._calculate_liquidity_for_amounts@22:
+    // smart_contracts/seltra_pool/contract.py:194
+    // assert liquidity > UInt64(MIN_LIQUIDITY), "Insufficient liquidity"
+    frame_dig 3
+    pushint 1000 // 1000
+    >
+    assert // Insufficient liquidity
+    // smart_contracts/seltra_pool/contract.py:196-197
+    // # Update range liquidity based on range_id
+    // if range_id == UInt64(1):
+    frame_dig -2
+    intc_1 // 1
+    ==
+    bz add_liquidity_else_body@6
+    // smart_contracts/seltra_pool/contract.py:198
+    // self.range1_liquidity = self.range1_liquidity + liquidity
+    intc_0 // 0
+    bytec_1 // "range1_liquidity"
+    app_global_get_ex
+    assert // check self.range1_liquidity exists
+    frame_dig 3
+    +
+    bytec_1 // "range1_liquidity"
+    swap
+    app_global_put
+
+add_liquidity_after_if_else@10:
+    // smart_contracts/seltra_pool/contract.py:204
+    // self.total_liquidity = self.total_liquidity + liquidity
+    intc_0 // 0
+    bytec 8 // "total_liquidity"
+    app_global_get_ex
+    assert // check self.total_liquidity exists
+    frame_dig 3
+    dup
+    cover 2
+    +
+    bytec 8 // "total_liquidity"
+    swap
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:205
+    // self.total_lp_tokens = self.total_lp_tokens + liquidity
+    intc_0 // 0
+    bytec 9 // "total_lp_tokens"
+    app_global_get_ex
+    assert // check self.total_lp_tokens exists
+    +
+    bytec 9 // "total_lp_tokens"
+    swap
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:210
+    // return arc4.String("Liquidity added successfully")
+    pushbytes 0x001c4c6971756964697479206164646564207375636365737366756c6c79
+    frame_bury 0
+    retsub
+
+add_liquidity_else_body@6:
+    // smart_contracts/seltra_pool/contract.py:199
+    // elif range_id == UInt64(2):
+    frame_dig -2
+    intc_3 // 2
+    ==
+    bz add_liquidity_else_body@8
+    // smart_contracts/seltra_pool/contract.py:200
+    // self.range2_liquidity = self.range2_liquidity + liquidity
+    intc_0 // 0
+    bytec_2 // "range2_liquidity"
+    app_global_get_ex
+    assert // check self.range2_liquidity exists
+    frame_dig 3
+    +
+    bytec_2 // "range2_liquidity"
+    swap
+    app_global_put
+    b add_liquidity_after_if_else@10
+
+add_liquidity_else_body@8:
+    // smart_contracts/seltra_pool/contract.py:202
+    // self.range3_liquidity = self.range3_liquidity + liquidity
+    intc_0 // 0
+    bytec_3 // "range3_liquidity"
+    app_global_get_ex
+    assert // check self.range3_liquidity exists
+    frame_dig 3
+    +
+    bytec_3 // "range3_liquidity"
+    swap
+    app_global_put
+    b add_liquidity_after_if_else@10
+
+add_liquidity_else_body@19:
+    // smart_contracts/seltra_pool/contract.py:464
+    // elif amount_y == UInt64(0):
+    frame_dig 1
+    bnz add_liquidity_else_body@21
+    frame_dig 0
+    frame_bury 3
+    // smart_contracts/seltra_pool/contract.py:185-192
+    // # Calculate liquidity tokens to mint
+    // liquidity = self._calculate_liquidity_for_amounts(
+    //     actual_x,
+    //     actual_y,
+    //     range_lower,
+    //     range_upper,
+    //     self.current_price
+    // )
+    b add_liquidity_after_inlined_smart_contracts.seltra_pool.contract.SeltraPoolContract._calculate_liquidity_for_amounts@22
+
+add_liquidity_else_body@21:
+    // smart_contracts/seltra_pool/contract.py:467-468
+    // # Use geometric mean as approximation
+    // return self._sqrt(amount_x * amount_y)
+    frame_dig 0
+    frame_dig 1
+    *
+    dup
+    frame_bury 7
+    // smart_contracts/seltra_pool/contract.py:497
+    // if x == UInt64(0):
+    bnz add_liquidity_after_if_else@25
+    // smart_contracts/seltra_pool/contract.py:498
+    // return UInt64(0)
+    intc_0 // 0
+
+add_liquidity_after_inlined_smart_contracts.seltra_pool.contract.SeltraPoolContract._sqrt@31:
+    frame_bury 3
+    // smart_contracts/seltra_pool/contract.py:185-192
+    // # Calculate liquidity tokens to mint
+    // liquidity = self._calculate_liquidity_for_amounts(
+    //     actual_x,
+    //     actual_y,
+    //     range_lower,
+    //     range_upper,
+    //     self.current_price
+    // )
+    b add_liquidity_after_inlined_smart_contracts.seltra_pool.contract.SeltraPoolContract._calculate_liquidity_for_amounts@22
+
+add_liquidity_after_if_else@25:
+    // smart_contracts/seltra_pool/contract.py:502
+    // y = (x + UInt64(1)) // UInt64(2)
+    frame_dig 7
+    dup
+    intc_1 // 1
+    +
+    intc_3 // 2
+    /
+    frame_bury 8
+    // smart_contracts/seltra_pool/contract.py:504-505
+    // # Newton's method iteration (limited iterations for gas efficiency)
+    // for i in urange(10):
+    intc_0 // 0
+    frame_bury 2
+    frame_bury 9
+
+add_liquidity_for_header@26:
+    // smart_contracts/seltra_pool/contract.py:504-505
+    // # Newton's method iteration (limited iterations for gas efficiency)
+    // for i in urange(10):
+    frame_dig 2
+    pushint 10 // 10
+    <
+    bz add_liquidity_after_for@30
+    // smart_contracts/seltra_pool/contract.py:506
+    // if y >= z:
+    frame_dig 8
+    frame_dig 9
+    >=
+    bz add_liquidity_after_if_else@29
+    frame_dig 9
+    // smart_contracts/seltra_pool/contract.py:467-468
+    // # Use geometric mean as approximation
+    // return self._sqrt(amount_x * amount_y)
+    b add_liquidity_after_inlined_smart_contracts.seltra_pool.contract.SeltraPoolContract._sqrt@31
+
+add_liquidity_after_if_else@29:
+    // smart_contracts/seltra_pool/contract.py:509
+    // y = (y + x // y) // UInt64(2)
+    frame_dig 7
+    frame_dig 8
+    dup
+    cover 2
+    /
+    dig 1
+    +
+    intc_3 // 2
+    /
+    // smart_contracts/seltra_pool/contract.py:504-505
+    // # Newton's method iteration (limited iterations for gas efficiency)
+    // for i in urange(10):
+    frame_dig 2
+    intc_1 // 1
+    +
+    frame_bury 2
+    frame_bury 8
+    frame_bury 9
+    b add_liquidity_for_header@26
+
+add_liquidity_after_for@30:
+    frame_dig 9
+    // smart_contracts/seltra_pool/contract.py:467-468
+    // # Use geometric mean as approximation
+    // return self._sqrt(amount_x * amount_y)
+    b add_liquidity_after_inlined_smart_contracts.seltra_pool.contract.SeltraPoolContract._sqrt@31
+
+add_liquidity_else_body@13:
+    // smart_contracts/seltra_pool/contract.py:436
+    // elif price_current >= price_upper:
+    frame_dig 4
+    frame_dig 6
+    >=
+    bz add_liquidity_else_body@15
+    // smart_contracts/seltra_pool/contract.py:437-438
+    // # All in asset Y
+    // return UInt64(0), amount_y_desired
+    intc_0 // 0
+    frame_dig -5
+    frame_bury 1
+    frame_bury 0
+    // smart_contracts/seltra_pool/contract.py:172-179
+    // # Calculate optimal amounts based on current price and range
+    // actual_x, actual_y = self._calculate_liquidity_amounts(
+    //     amount_x_desired,
+    //     amount_y_desired,
+    //     range_lower,
+    //     range_upper,
+    //     self.current_price
+    // )
+    b add_liquidity_after_inlined_smart_contracts.seltra_pool.contract.SeltraPoolContract._calculate_liquidity_amounts@16
+
+add_liquidity_else_body@15:
+    // smart_contracts/seltra_pool/contract.py:440-442
+    // # Mixed - use desired amounts but maintain some ratio
+    // # Simplified for basic version
+    // ratio_in_range = ((price_current - price_lower) * UInt64(FIXED_POINT_SCALE)) // (price_upper - price_lower)
+    frame_dig 4
+    frame_dig 5
+    dup
+    cover 2
+    -
+    intc_2 // 1000000000000000000
+    *
+    frame_dig 6
+    uncover 2
+    -
+    /
+    // smart_contracts/seltra_pool/contract.py:444-445
+    // # Adjust amounts based on position in range
+    // actual_x = (amount_x_desired * (UInt64(FIXED_POINT_SCALE) - ratio_in_range)) // UInt64(FIXED_POINT_SCALE)
+    intc_2 // 1000000000000000000
+    dig 1
+    -
+    frame_dig -6
+    *
+    intc_2 // 1000000000000000000
+    /
+    frame_bury 0
+    // smart_contracts/seltra_pool/contract.py:446
+    // actual_y = (amount_y_desired * ratio_in_range) // UInt64(FIXED_POINT_SCALE)
+    frame_dig -5
+    *
+    intc_2 // 1000000000000000000
+    /
+    frame_bury 1
+    // smart_contracts/seltra_pool/contract.py:172-179
+    // # Calculate optimal amounts based on current price and range
+    // actual_x, actual_y = self._calculate_liquidity_amounts(
+    //     amount_x_desired,
+    //     amount_y_desired,
+    //     range_lower,
+    //     range_upper,
+    //     self.current_price
+    // )
+    b add_liquidity_after_inlined_smart_contracts.seltra_pool.contract.SeltraPoolContract._calculate_liquidity_amounts@16
+
+add_liquidity_bool_false@3:
+    intc_0 // 0
+    b add_liquidity_bool_merge@4
+
+
+// smart_contracts.seltra_pool.contract.SeltraPoolContract.remove_liquidity(lp_token_amount: uint64, amount_x_min: uint64, amount_y_min: uint64, range_id: uint64, deadline: uint64) -> bytes:
+remove_liquidity:
+    // smart_contracts/seltra_pool/contract.py:212-220
+    // @abimethod()
+    // def remove_liquidity(
+    //     self,
+    //     lp_token_amount: UInt64,
+    //     amount_x_min: UInt64,
+    //     amount_y_min: UInt64,
+    //     range_id: UInt64,
+    //     deadline: UInt64,
+    // ) -> arc4.String:
+    proto 5 1
+    pushbytes ""
+    dupn 3
+    // smart_contracts/seltra_pool/contract.py:234
+    // assert self.is_initialized, "Pool not initialized"
+    intc_0 // 0
+    bytec 4 // "is_initialized"
+    app_global_get_ex
+    assert // check self.is_initialized exists
+    assert // Pool not initialized
+    // smart_contracts/seltra_pool/contract.py:235
+    // assert Global.latest_timestamp <= deadline, "Deadline exceeded"
+    global LatestTimestamp
+    frame_dig -1
+    <=
+    assert // Deadline exceeded
+    // smart_contracts/seltra_pool/contract.py:236
+    // assert lp_token_amount > UInt64(0), "Invalid LP token amount"
+    frame_dig -5
+    assert // Invalid LP token amount
+    // smart_contracts/seltra_pool/contract.py:237
+    // assert range_id >= UInt64(1) and range_id <= UInt64(3), "Invalid range ID"
+    frame_dig -2
+    bz remove_liquidity_bool_false@3
+    frame_dig -2
+    pushint 3 // 3
+    <=
+    bz remove_liquidity_bool_false@3
+    intc_1 // 1
+
+remove_liquidity_bool_merge@4:
+    // smart_contracts/seltra_pool/contract.py:237
+    // assert range_id >= UInt64(1) and range_id <= UInt64(3), "Invalid range ID"
+    assert // Invalid range ID
+    // smart_contracts/seltra_pool/contract.py:239-240
+    // # Get current range liquidity
+    // current_range_liquidity = self._get_range_liquidity(range_id)
+    frame_dig -2
+    callsub _get_range_liquidity
+    // smart_contracts/seltra_pool/contract.py:241
+    // assert current_range_liquidity >= lp_token_amount, "Insufficient liquidity"
+    frame_dig -5
+    >=
+    assert // Insufficient liquidity
+    // smart_contracts/seltra_pool/contract.py:243-244
+    // # Get range bounds
+    // range_lower, range_upper = self._get_range_bounds(range_id)
+    frame_dig -2
+    callsub _get_range_bounds
+    frame_bury 3
+    dup
+    frame_bury 2
+    // smart_contracts/seltra_pool/contract.py:251
+    // self.current_price
+    intc_0 // 0
+    bytec_0 // "current_price"
+    app_global_get_ex
+    swap
+    dup
+    cover 2
+    frame_bury 1
+    assert // check self.current_price exists
+    // smart_contracts/seltra_pool/contract.py:480-481
+    // # Simplified calculation based on current price position
+    // if price_current <= price_lower:
+    >=
+    bz remove_liquidity_else_body@13
+    // smart_contracts/seltra_pool/contract.py:482
+    // return liquidity, UInt64(0)
+    intc_0 // 0
+    frame_dig -5
+    frame_bury 0
+
+remove_liquidity_after_inlined_smart_contracts.seltra_pool.contract.SeltraPoolContract._calculate_amounts_for_liquidity@16:
+    // smart_contracts/seltra_pool/contract.py:254-255
+    // # Validate minimum amounts
+    // assert amount_x >= amount_x_min, "Insufficient amount X"
+    frame_dig 0
+    frame_dig -4
+    >=
+    assert // Insufficient amount X
+    // smart_contracts/seltra_pool/contract.py:256
+    // assert amount_y >= amount_y_min, "Insufficient amount Y"
+    frame_dig -3
+    >=
+    assert // Insufficient amount Y
+    // smart_contracts/seltra_pool/contract.py:258-259
+    // # Update range liquidity
+    // if range_id == UInt64(1):
+    frame_dig -2
+    intc_1 // 1
+    ==
+    bz remove_liquidity_else_body@6
+    // smart_contracts/seltra_pool/contract.py:260
+    // self.range1_liquidity = self.range1_liquidity - lp_token_amount
+    intc_0 // 0
+    bytec_1 // "range1_liquidity"
+    app_global_get_ex
+    assert // check self.range1_liquidity exists
+    frame_dig -5
+    -
+    bytec_1 // "range1_liquidity"
+    swap
+    app_global_put
+
+remove_liquidity_after_if_else@10:
+    // smart_contracts/seltra_pool/contract.py:266
+    // self.total_liquidity = self.total_liquidity - lp_token_amount
+    intc_0 // 0
+    bytec 8 // "total_liquidity"
+    app_global_get_ex
+    assert // check self.total_liquidity exists
+    frame_dig -5
+    -
+    bytec 8 // "total_liquidity"
+    swap
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:267
+    // self.total_lp_tokens = self.total_lp_tokens - lp_token_amount
+    intc_0 // 0
+    bytec 9 // "total_lp_tokens"
+    app_global_get_ex
+    assert // check self.total_lp_tokens exists
+    frame_dig -5
+    -
+    bytec 9 // "total_lp_tokens"
+    swap
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:272
+    // return arc4.String("Liquidity removed successfully")
+    pushbytes 0x001e4c69717569646974792072656d6f766564207375636365737366756c6c79
+    frame_bury 0
+    retsub
+
+remove_liquidity_else_body@6:
+    // smart_contracts/seltra_pool/contract.py:261
+    // elif range_id == UInt64(2):
+    frame_dig -2
+    intc_3 // 2
+    ==
+    bz remove_liquidity_else_body@8
+    // smart_contracts/seltra_pool/contract.py:262
+    // self.range2_liquidity = self.range2_liquidity - lp_token_amount
+    intc_0 // 0
+    bytec_2 // "range2_liquidity"
+    app_global_get_ex
+    assert // check self.range2_liquidity exists
+    frame_dig -5
+    -
+    bytec_2 // "range2_liquidity"
+    swap
+    app_global_put
+    b remove_liquidity_after_if_else@10
+
+remove_liquidity_else_body@8:
+    // smart_contracts/seltra_pool/contract.py:264
+    // self.range3_liquidity = self.range3_liquidity - lp_token_amount
+    intc_0 // 0
+    bytec_3 // "range3_liquidity"
+    app_global_get_ex
+    assert // check self.range3_liquidity exists
+    frame_dig -5
+    -
+    bytec_3 // "range3_liquidity"
+    swap
+    app_global_put
+    b remove_liquidity_after_if_else@10
+
+remove_liquidity_else_body@13:
+    // smart_contracts/seltra_pool/contract.py:483
+    // elif price_current >= price_upper:
+    frame_dig 1
+    frame_dig 3
+    >=
+    bz remove_liquidity_else_body@15
+    frame_dig -5
+    // smart_contracts/seltra_pool/contract.py:484
+    // return UInt64(0), liquidity
+    intc_0 // 0
+    frame_bury 0
+    // smart_contracts/seltra_pool/contract.py:246-252
+    // # Calculate amounts to return
+    // amount_x, amount_y = self._calculate_amounts_for_liquidity(
+    //     lp_token_amount,
+    //     range_lower,
+    //     range_upper,
+    //     self.current_price
+    // )
+    b remove_liquidity_after_inlined_smart_contracts.seltra_pool.contract.SeltraPoolContract._calculate_amounts_for_liquidity@16
+
+remove_liquidity_else_body@15:
+    // smart_contracts/seltra_pool/contract.py:486-487
+    // # Split based on position in range
+    // ratio = ((price_current - price_lower) * UInt64(FIXED_POINT_SCALE)) // (price_upper - price_lower)
+    frame_dig 1
+    frame_dig 2
+    dup
+    cover 2
+    -
+    intc_2 // 1000000000000000000
+    *
+    frame_dig 3
+    uncover 2
+    -
+    /
+    // smart_contracts/seltra_pool/contract.py:489
+    // amount_x = (liquidity * (UInt64(FIXED_POINT_SCALE) - ratio)) // UInt64(FIXED_POINT_SCALE)
+    intc_2 // 1000000000000000000
+    dig 1
+    -
+    frame_dig -5
+    *
+    intc_2 // 1000000000000000000
+    /
+    frame_bury 0
+    // smart_contracts/seltra_pool/contract.py:490
+    // amount_y = (liquidity * ratio) // UInt64(FIXED_POINT_SCALE)
+    frame_dig -5
+    *
+    intc_2 // 1000000000000000000
+    /
+    // smart_contracts/seltra_pool/contract.py:246-252
+    // # Calculate amounts to return
+    // amount_x, amount_y = self._calculate_amounts_for_liquidity(
+    //     lp_token_amount,
+    //     range_lower,
+    //     range_upper,
+    //     self.current_price
+    // )
+    b remove_liquidity_after_inlined_smart_contracts.seltra_pool.contract.SeltraPoolContract._calculate_amounts_for_liquidity@16
+
+remove_liquidity_bool_false@3:
+    intc_0 // 0
+    b remove_liquidity_bool_merge@4
+
+
+// smart_contracts.seltra_pool.contract.SeltraPoolContract.swap(asset_in: uint64, asset_out: uint64, amount_in: uint64, min_amount_out: uint64, deadline: uint64) -> bytes:
+swap:
+    // smart_contracts/seltra_pool/contract.py:274-282
+    // @abimethod()
+    // def swap(
+    //     self,
+    //     asset_in: Asset,
+    //     asset_out: Asset,
+    //     amount_in: UInt64,
+    //     min_amount_out: UInt64,
+    //     deadline: UInt64,
+    // ) -> arc4.String:
+    proto 5 1
+    pushbytes ""
+    // smart_contracts/seltra_pool/contract.py:296
+    // assert self.is_initialized, "Pool not initialized"
+    intc_0 // 0
+    bytec 4 // "is_initialized"
+    app_global_get_ex
+    assert // check self.is_initialized exists
+    assert // Pool not initialized
+    // smart_contracts/seltra_pool/contract.py:297
+    // assert Global.latest_timestamp <= deadline, "Deadline exceeded"
+    global LatestTimestamp
+    frame_dig -1
+    <=
+    assert // Deadline exceeded
+    // smart_contracts/seltra_pool/contract.py:298
+    // assert amount_in > UInt64(0), "Invalid input amount"
+    frame_dig -3
+    assert // Invalid input amount
+    // smart_contracts/seltra_pool/contract.py:300-301
+    // # Validate asset pair
+    // is_x_to_y = (asset_in.id == self.asset_x_id and asset_out.id == self.asset_y_id)
+    intc_0 // 0
+    bytec 5 // "asset_x_id"
+    app_global_get_ex
+    assert // check self.asset_x_id exists
+    frame_dig -5
+    ==
+    bz swap_bool_false@3
+    intc_0 // 0
+    bytec 6 // "asset_y_id"
+    app_global_get_ex
+    assert // check self.asset_y_id exists
+    frame_dig -4
+    ==
+    bz swap_bool_false@3
+    intc_1 // 1
+    frame_bury 0
+
+swap_bool_merge@4:
+    // smart_contracts/seltra_pool/contract.py:302
+    // is_y_to_x = (asset_in.id == self.asset_y_id and asset_out.id == self.asset_x_id)
+    intc_0 // 0
+    bytec 6 // "asset_y_id"
+    app_global_get_ex
+    assert // check self.asset_y_id exists
+    frame_dig -5
+    ==
+    bz swap_bool_false@7
+    intc_0 // 0
+    bytec 5 // "asset_x_id"
+    app_global_get_ex
+    assert // check self.asset_x_id exists
+    frame_dig -4
+    ==
+    bz swap_bool_false@7
+    intc_1 // 1
+
+swap_bool_merge@8:
+    // smart_contracts/seltra_pool/contract.py:303
+    // assert is_x_to_y or is_y_to_x, "Invalid asset pair"
+    frame_dig 0
+    dup
+    uncover 2
+    ||
+    assert // Invalid asset pair
+    // smart_contracts/seltra_pool/contract.py:305-308
+    // # Calculate swap across all active ranges
+    // total_amount_out, total_fee_paid, new_price = self._execute_swap_across_ranges(
+    //     amount_in, is_x_to_y
+    // )
+    frame_dig -3
+    swap
+    callsub _execute_swap_across_ranges
+    cover 2
+    pop
+    // smart_contracts/seltra_pool/contract.py:310-311
+    // # Validate slippage protection
+    // assert total_amount_out >= min_amount_out, "Slippage exceeded"
+    frame_dig -2
+    >=
+    assert // Slippage exceeded
+    // smart_contracts/seltra_pool/contract.py:313-314
+    // # Update current price
+    // self.current_price = new_price
+    bytec_0 // "current_price"
+    swap
+    app_global_put
+    // smart_contracts/seltra_pool/contract.py:318
+    // return arc4.String("Swap executed successfully")
+    pushbytes 0x001a53776170206578656375746564207375636365737366756c6c79
+    swap
+    retsub
+
+swap_bool_false@7:
+    intc_0 // 0
+    b swap_bool_merge@8
+
+swap_bool_false@3:
+    intc_0 // 0
+    frame_bury 0
+    b swap_bool_merge@4
+
+
+// smart_contracts.seltra_pool.contract.SeltraPoolContract._execute_swap_across_ranges(amount_in: uint64, is_x_to_y: uint64) -> uint64, uint64, uint64:
+_execute_swap_across_ranges:
+    // smart_contracts/seltra_pool/contract.py:320-323
+    // @subroutine
+    // def _execute_swap_across_ranges(
+    //     self, amount_in: UInt64, is_x_to_y: bool
+    // ) -> tuple[UInt64, UInt64, UInt64]:
+    proto 2 3
+    pushbytes ""
+    dupn 9
+    // smart_contracts/seltra_pool/contract.py:326
+    // total_amount_out = UInt64(0)
+    intc_0 // 0
+    // smart_contracts/seltra_pool/contract.py:327-328
+    // total_fee_paid = UInt64(0)
+    // current_price = self.current_price
+    dupn 2
+    // smart_contracts/seltra_pool/contract.py:328
+    // current_price = self.current_price
+    bytec_0 // "current_price"
+    app_global_get_ex
+    swap
+    dup
+    uncover 2
+    assert // check self.current_price exists
+    // smart_contracts/seltra_pool/contract.py:386-387
+    // # Check Range 1 (tight)
+    // if price >= self.range1_lower and price <= self.range1_upper and self.range1_liquidity > UInt64(0):
+    intc_0 // 0
+    bytec 10 // "range1_lower"
+    app_global_get_ex
+    assert // check self.range1_lower exists
+    >=
+    bz _execute_swap_across_ranges_after_if_else@16
+    intc_0 // 0
+    bytec 11 // "range1_upper"
+    app_global_get_ex
+    assert // check self.range1_upper exists
+    frame_dig 12
+    >=
+    bz _execute_swap_across_ranges_after_if_else@16
+    intc_0 // 0
+    bytec_1 // "range1_liquidity"
+    app_global_get_ex
+    assert // check self.range1_liquidity exists
+    bz _execute_swap_across_ranges_after_if_else@16
+    // smart_contracts/seltra_pool/contract.py:388
+    // return UInt64(1)
+    intc_1 // 1
+    frame_bury 2
+
+_execute_swap_across_ranges_after_inlined_smart_contracts.seltra_pool.contract.SeltraPoolContract._find_active_range_for_price@25:
+    frame_dig 12
+    frame_bury 3
+    frame_dig 11
+    frame_bury 9
+    frame_dig 10
+    frame_bury 8
+    // smart_contracts/seltra_pool/contract.py:333
+    // if best_range > UInt64(0):
+    frame_dig 2
+    bz _execute_swap_across_ranges_after_if_else@4
+    // smart_contracts/seltra_pool/contract.py:334
+    // range_lower, range_upper = self._get_range_bounds(best_range)
+    frame_dig 2
+    dup
+    callsub _get_range_bounds
+    pop
+    frame_bury 7
+    // smart_contracts/seltra_pool/contract.py:335
+    // range_liquidity = self._get_range_liquidity(best_range)
+    callsub _get_range_liquidity
+    dup
+    frame_bury 6
+    // smart_contracts/seltra_pool/contract.py:337
+    // if range_liquidity > UInt64(0):
+    bz _execute_swap_across_ranges_after_if_else@3
+    // smart_contracts/seltra_pool/contract.py:359-360
+    // # Apply fee
+    // fee_amount = (amount_in * self.current_fee_rate) // UInt64(10000)
+    intc_0 // 0
+    bytec 16 // "current_fee_rate"
+    app_global_get_ex
+    assert // check self.current_fee_rate exists
+    frame_dig -2
+    *
+    pushint 10000 // 10000
+    /
+    dup
+    frame_bury 4
+    // smart_contracts/seltra_pool/contract.py:361
+    // amount_in_after_fee = amount_in - fee_amount
+    frame_dig -2
+    swap
+    -
+    frame_bury 0
+    // smart_contracts/seltra_pool/contract.py:363-365
+    // # Simplified constant product formula for this range
+    // # In a full implementation, this would use concentrated liquidity math
+    // if liquidity == UInt64(0):
+    frame_dig 6
+    bnz _execute_swap_across_ranges_after_if_else@7
+    // smart_contracts/seltra_pool/contract.py:366
+    // return UInt64(0), UInt64(0), self.current_price
+    intc_0 // 0
+    bytec_0 // "current_price"
+    app_global_get_ex
+    assert // check self.current_price exists
+    intc_0 // 0
+    swap
+    intc_0 // 0
+    swap
+    frame_bury 5
+    swap
+    frame_bury 1
+
+_execute_swap_across_ranges_after_inlined_smart_contracts.seltra_pool.contract.SeltraPoolContract._calculate_swap_in_range@11:
+    frame_dig 5
+    frame_bury 12
+    frame_bury 11
+    frame_dig 1
+    frame_bury 10
+
+_execute_swap_across_ranges_after_if_else@3:
+    frame_dig 12
+    frame_bury 3
+    frame_dig 11
+    frame_bury 9
+    frame_dig 10
+    frame_bury 8
+
+_execute_swap_across_ranges_after_if_else@4:
+    frame_dig 3
+    frame_dig 8
+    frame_dig 9
+    // smart_contracts/seltra_pool/contract.py:346
+    // return total_amount_out, total_fee_paid, current_price
+    uncover 2
+    frame_bury 2
+    frame_bury 1
+    frame_bury 0
+    retsub
+
+_execute_swap_across_ranges_after_if_else@7:
+    // smart_contracts/seltra_pool/contract.py:368-369
+    // # Simplified calculation - in production would use proper concentrated liquidity formula
+    // amount_out = (amount_in_after_fee * liquidity) // (liquidity + amount_in_after_fee)
+    frame_dig 0
+    dup
+    frame_dig 6
+    dup
+    cover 2
+    *
+    dig 1
+    uncover 3
+    +
+    /
+    frame_bury 1
+    // smart_contracts/seltra_pool/contract.py:371-372
+    // # Calculate new price (simplified)
+    // price_impact = (amount_in * UInt64(FIXED_POINT_SCALE)) // (liquidity * UInt64(100))  # 1% per unit
+    frame_dig -2
+    intc_2 // 1000000000000000000
+    *
+    swap
+    pushint 100 // 100
+    *
+    /
+    // smart_contracts/seltra_pool/contract.py:374
+    // if is_x_to_y:
+    frame_dig -1
+    bz _execute_swap_across_ranges_else_body@9
+    // smart_contracts/seltra_pool/contract.py:375
+    // new_price = self.current_price + price_impact
+    intc_0 // 0
+    bytec_0 // "current_price"
+    app_global_get_ex
+    assert // check self.current_price exists
+    +
+    frame_bury 5
+
+_execute_swap_across_ranges_after_if_else@10:
+    frame_dig 4
+    // smart_contracts/seltra_pool/contract.py:338-340
+    // amount_out, fee_paid, new_price = self._calculate_swap_in_range(
+    //     amount_in, range_lower, range_upper, range_liquidity, is_x_to_y
+    // )
+    b _execute_swap_across_ranges_after_inlined_smart_contracts.seltra_pool.contract.SeltraPoolContract._calculate_swap_in_range@11
+
+_execute_swap_across_ranges_else_body@9:
+    // smart_contracts/seltra_pool/contract.py:377
+    // new_price_calc = self.current_price - price_impact
+    intc_0 // 0
+    bytec_0 // "current_price"
+    app_global_get_ex
+    assert // check self.current_price exists
+    swap
+    -
+    // smart_contracts/seltra_pool/contract.py:378
+    // new_price = new_price_calc if new_price_calc >= range_lower else range_lower
+    dup
+    frame_dig 7
+    dup
+    cover 2
+    >=
+    swap
+    cover 2
+    select
+    frame_bury 5
+    b _execute_swap_across_ranges_after_if_else@10
+
+_execute_swap_across_ranges_after_if_else@16:
+    // smart_contracts/seltra_pool/contract.py:390-391
+    // # Check Range 2 (medium)
+    // if price >= self.range2_lower and price <= self.range2_upper and self.range2_liquidity > UInt64(0):
+    intc_0 // 0
+    bytec 12 // "range2_lower"
+    app_global_get_ex
+    assert // check self.range2_lower exists
+    frame_dig 12
+    <=
+    bz _execute_swap_across_ranges_after_if_else@20
+    intc_0 // 0
+    bytec 13 // "range2_upper"
+    app_global_get_ex
+    assert // check self.range2_upper exists
+    frame_dig 12
+    >=
+    bz _execute_swap_across_ranges_after_if_else@20
+    intc_0 // 0
+    bytec_2 // "range2_liquidity"
+    app_global_get_ex
+    assert // check self.range2_liquidity exists
+    bz _execute_swap_across_ranges_after_if_else@20
+    // smart_contracts/seltra_pool/contract.py:392
+    // return UInt64(2)
+    intc_3 // 2
+    frame_bury 2
+    // smart_contracts/seltra_pool/contract.py:330-331
+    // # For simplicity, use the range that contains current price
+    // best_range = self._find_active_range_for_price(current_price)
+    b _execute_swap_across_ranges_after_inlined_smart_contracts.seltra_pool.contract.SeltraPoolContract._find_active_range_for_price@25
+
+_execute_swap_across_ranges_after_if_else@20:
+    // smart_contracts/seltra_pool/contract.py:394-395
+    // # Check Range 3 (wide)
+    // if price >= self.range3_lower and price <= self.range3_upper and self.range3_liquidity > UInt64(0):
+    intc_0 // 0
+    bytec 14 // "range3_lower"
+    app_global_get_ex
+    assert // check self.range3_lower exists
+    frame_dig 12
+    <=
+    bz _execute_swap_across_ranges_after_if_else@24
+    intc_0 // 0
+    bytec 15 // "range3_upper"
+    app_global_get_ex
+    assert // check self.range3_upper exists
+    frame_dig 12
+    >=
+    bz _execute_swap_across_ranges_after_if_else@24
+    intc_0 // 0
+    bytec_3 // "range3_liquidity"
+    app_global_get_ex
+    assert // check self.range3_liquidity exists
+    bz _execute_swap_across_ranges_after_if_else@24
+    // smart_contracts/seltra_pool/contract.py:396
+    // return UInt64(3)
+    pushint 3 // 3
+    frame_bury 2
+    // smart_contracts/seltra_pool/contract.py:330-331
+    // # For simplicity, use the range that contains current price
+    // best_range = self._find_active_range_for_price(current_price)
+    b _execute_swap_across_ranges_after_inlined_smart_contracts.seltra_pool.contract.SeltraPoolContract._find_active_range_for_price@25
+
+_execute_swap_across_ranges_after_if_else@24:
+    // smart_contracts/seltra_pool/contract.py:398-399
+    // # Default to range 2 if no perfect match
+    // return UInt64(2)
+    intc_3 // 2
+    frame_bury 2
+    // smart_contracts/seltra_pool/contract.py:330-331
+    // # For simplicity, use the range that contains current price
+    // best_range = self._find_active_range_for_price(current_price)
+    b _execute_swap_across_ranges_after_inlined_smart_contracts.seltra_pool.contract.SeltraPoolContract._find_active_range_for_price@25
+
+
+// smart_contracts.seltra_pool.contract.SeltraPoolContract._get_range_bounds(range_id: uint64) -> uint64, uint64:
+_get_range_bounds:
+    // smart_contracts/seltra_pool/contract.py:401-402
+    // @subroutine
+    // def _get_range_bounds(self, range_id: UInt64) -> tuple[UInt64, UInt64]:
+    proto 1 2
+    // smart_contracts/seltra_pool/contract.py:404
+    // if range_id == UInt64(1):
+    frame_dig -1
+    intc_1 // 1
+    ==
+    bz _get_range_bounds_else_body@2
+    // smart_contracts/seltra_pool/contract.py:405
+    // return self.range1_lower, self.range1_upper
+    intc_0 // 0
+    bytec 10 // "range1_lower"
+    app_global_get_ex
+    assert // check self.range1_lower exists
+    intc_0 // 0
+    bytec 11 // "range1_upper"
+    app_global_get_ex
+    assert // check self.range1_upper exists
+    retsub
+
+_get_range_bounds_else_body@2:
+    // smart_contracts/seltra_pool/contract.py:406
+    // elif range_id == UInt64(2):
+    frame_dig -1
+    intc_3 // 2
+    ==
+    bz _get_range_bounds_else_body@4
+    // smart_contracts/seltra_pool/contract.py:407
+    // return self.range2_lower, self.range2_upper
+    intc_0 // 0
+    bytec 12 // "range2_lower"
+    app_global_get_ex
+    assert // check self.range2_lower exists
+    intc_0 // 0
+    bytec 13 // "range2_upper"
+    app_global_get_ex
+    assert // check self.range2_upper exists
+    retsub
+
+_get_range_bounds_else_body@4:
+    // smart_contracts/seltra_pool/contract.py:409
+    // return self.range3_lower, self.range3_upper
+    intc_0 // 0
+    bytec 14 // "range3_lower"
+    app_global_get_ex
+    assert // check self.range3_lower exists
+    intc_0 // 0
+    bytec 15 // "range3_upper"
+    app_global_get_ex
+    assert // check self.range3_upper exists
+    retsub
+
+
+// smart_contracts.seltra_pool.contract.SeltraPoolContract._get_range_liquidity(range_id: uint64) -> uint64:
+_get_range_liquidity:
+    // smart_contracts/seltra_pool/contract.py:411-412
+    // @subroutine
+    // def _get_range_liquidity(self, range_id: UInt64) -> UInt64:
+    proto 1 1
+    // smart_contracts/seltra_pool/contract.py:414
+    // if range_id == UInt64(1):
+    frame_dig -1
+    intc_1 // 1
+    ==
+    bz _get_range_liquidity_else_body@2
+    // smart_contracts/seltra_pool/contract.py:415
+    // return self.range1_liquidity
+    intc_0 // 0
+    bytec_1 // "range1_liquidity"
+    app_global_get_ex
+    assert // check self.range1_liquidity exists
+    retsub
+
+_get_range_liquidity_else_body@2:
+    // smart_contracts/seltra_pool/contract.py:416
+    // elif range_id == UInt64(2):
+    frame_dig -1
+    intc_3 // 2
+    ==
+    bz _get_range_liquidity_else_body@4
+    // smart_contracts/seltra_pool/contract.py:417
+    // return self.range2_liquidity
+    intc_0 // 0
+    bytec_2 // "range2_liquidity"
+    app_global_get_ex
+    assert // check self.range2_liquidity exists
+    retsub
+
+_get_range_liquidity_else_body@4:
+    // smart_contracts/seltra_pool/contract.py:419
+    // return self.range3_liquidity
+    intc_0 // 0
+    bytec_3 // "range3_liquidity"
+    app_global_get_ex
+    assert // check self.range3_liquidity exists
+    retsub
+
+
+// smart_contracts.seltra_pool.contract.SeltraPoolContract.get_pool_info() -> bytes:
+get_pool_info:
+    // smart_contracts/seltra_pool/contract.py:518
+    // if not self.is_initialized:
+    intc_0 // 0
+    bytec 4 // "is_initialized"
+    app_global_get_ex
+    assert // check self.is_initialized exists
+    bnz get_pool_info_after_if_else@2
+    // smart_contracts/seltra_pool/contract.py:519
+    // return arc4.String("Pool not initialized")
+    pushbytes 0x0014506f6f6c206e6f7420696e697469616c697a6564
+    retsub
+
+get_pool_info_after_if_else@2:
+    // smart_contracts/seltra_pool/contract.py:521
+    // return arc4.String("Pool initialized and active")
+    pushbytes 0x001b506f6f6c20696e697469616c697a656420616e6420616374697665
+    retsub
+
+
+// smart_contracts.seltra_pool.contract.SeltraPoolContract.get_range_info(range_id: uint64) -> bytes:
+get_range_info:
+    // smart_contracts/seltra_pool/contract.py:523-524
+    // @abimethod()
+    // def get_range_info(self, range_id: UInt64) -> arc4.String:
+    proto 1 1
+    // smart_contracts/seltra_pool/contract.py:526
+    // assert range_id >= UInt64(1) and range_id <= UInt64(3), "Invalid range ID"
+    frame_dig -1
+    bz get_range_info_bool_false@3
+    frame_dig -1
+    pushint 3 // 3
+    <=
+    bz get_range_info_bool_false@3
+    intc_1 // 1
+
+get_range_info_bool_merge@4:
+    // smart_contracts/seltra_pool/contract.py:526
+    // assert range_id >= UInt64(1) and range_id <= UInt64(3), "Invalid range ID"
+    assert // Invalid range ID
+    // smart_contracts/seltra_pool/contract.py:528
+    // range_lower, range_upper = self._get_range_bounds(range_id)
+    frame_dig -1
+    callsub _get_range_bounds
+    popn 2
+    // smart_contracts/seltra_pool/contract.py:529
+    // range_liquidity = self._get_range_liquidity(range_id)
+    frame_dig -1
+    callsub _get_range_liquidity
+    pop
+    // smart_contracts/seltra_pool/contract.py:531
+    // return arc4.String("Range information available")
+    pushbytes 0x001b52616e676520696e666f726d6174696f6e20617661696c61626c65
+    retsub
+
+get_range_info_bool_false@3:
+    intc_0 // 0
+    b get_range_info_bool_merge@4
+
+
+// smart_contracts.seltra_pool.contract.SeltraPoolContract.calculate_swap_output(asset_in: uint64, asset_out: uint64, amount_in: uint64) -> bytes:
+calculate_swap_output:
+    // smart_contracts/seltra_pool/contract.py:533-539
+    // @abimethod()
+    // def calculate_swap_output(
+    //     self,
+    //     asset_in: Asset,
+    //     asset_out: Asset,
+    //     amount_in: UInt64,
+    // ) -> arc4.String:
+    proto 3 1
+    pushbytes ""
+    // smart_contracts/seltra_pool/contract.py:551
+    // assert self.is_initialized, "Pool not initialized"
+    intc_0 // 0
+    bytec 4 // "is_initialized"
+    app_global_get_ex
+    assert // check self.is_initialized exists
+    assert // Pool not initialized
+    // smart_contracts/seltra_pool/contract.py:553-554
+    // # Validate asset pair
+    // is_x_to_y = (asset_in.id == self.asset_x_id and asset_out.id == self.asset_y_id)
+    intc_0 // 0
+    bytec 5 // "asset_x_id"
+    app_global_get_ex
+    assert // check self.asset_x_id exists
+    frame_dig -3
+    ==
+    bz calculate_swap_output_bool_false@3
+    intc_0 // 0
+    bytec 6 // "asset_y_id"
+    app_global_get_ex
+    assert // check self.asset_y_id exists
+    frame_dig -2
+    ==
+    bz calculate_swap_output_bool_false@3
+    intc_1 // 1
+    frame_bury 0
+
+calculate_swap_output_bool_merge@4:
+    // smart_contracts/seltra_pool/contract.py:555
+    // is_y_to_x = (asset_in.id == self.asset_y_id and asset_out.id == self.asset_x_id)
+    intc_0 // 0
+    bytec 6 // "asset_y_id"
+    app_global_get_ex
+    assert // check self.asset_y_id exists
+    frame_dig -3
+    ==
+    bz calculate_swap_output_bool_false@7
+    intc_0 // 0
+    bytec 5 // "asset_x_id"
+    app_global_get_ex
+    assert // check self.asset_x_id exists
+    frame_dig -2
+    ==
+    bz calculate_swap_output_bool_false@7
+    intc_1 // 1
+
+calculate_swap_output_bool_merge@8:
+    // smart_contracts/seltra_pool/contract.py:556
+    // assert is_x_to_y or is_y_to_x, "Invalid asset pair"
+    frame_dig 0
+    dup
+    uncover 2
+    ||
+    assert // Invalid asset pair
+    // smart_contracts/seltra_pool/contract.py:558-559
+    // # Calculate swap (read-only)
+    // amount_out, fee_paid, new_price = self._execute_swap_across_ranges(amount_in, is_x_to_y)
+    frame_dig -1
+    swap
+    callsub _execute_swap_across_ranges
+    cover 2
+    popn 2
+    // smart_contracts/seltra_pool/contract.py:561-562
+    // # Calculate price impact in basis points
+    // price_change = new_price - self.current_price if new_price >= self.current_price else self.current_price - new_price
+    intc_0 // 0
+    bytec_0 // "current_price"
+    app_global_get_ex
+    assert // check self.current_price exists
+    >=
+    bz calculate_swap_output_ternary_false@10
+    intc_0 // 0
+    bytec_0 // "current_price"
+    app_global_get_ex
+    bury 1
+    assert // check self.current_price exists
+
+calculate_swap_output_ternary_merge@11:
+    // smart_contracts/seltra_pool/contract.py:563
+    // price_impact_bps = (price_change * UInt64(10000)) // self.current_price
+    intc_0 // 0
+    bytec_0 // "current_price"
+    app_global_get_ex
+    bury 1
+    assert // check self.current_price exists
+    // smart_contracts/seltra_pool/contract.py:565
+    // return arc4.String("Swap calculation completed")
+    pushbytes 0x001a537761702063616c63756c6174696f6e20636f6d706c65746564
+    swap
+    retsub
+
+calculate_swap_output_ternary_false@10:
+    // smart_contracts/seltra_pool/contract.py:561-562
+    // # Calculate price impact in basis points
+    // price_change = new_price - self.current_price if new_price >= self.current_price else self.current_price - new_price
+    intc_0 // 0
+    bytec_0 // "current_price"
+    app_global_get_ex
+    bury 1
+    assert // check self.current_price exists
+    b calculate_swap_output_ternary_merge@11
+
+calculate_swap_output_bool_false@7:
+    intc_0 // 0
+    b calculate_swap_output_bool_merge@8
+
+calculate_swap_output_bool_false@3:
+    intc_0 // 0
+    frame_bury 0
+    b calculate_swap_output_bool_merge@4
