@@ -18,3 +18,9 @@ Three core innovations working together:
 - **Better LP Returns**: 15%+ APY through intelligent positioning
 
 # the real part
+
+- [ ] non-web3 part
+    - [ ] simulations (volatile, normal) with "real" wallets
+    - [ ] dockerization for deployment of algorand network and our servers
+    - [ ] base for frontend
+- [ ] web3
