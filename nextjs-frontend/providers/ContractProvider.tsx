@@ -146,7 +146,32 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
 
     try {
       const suggestedParams = await algodClient.getTransactionParams().do();
-      
+      const transactions: algosdk.Transaction[] = [];
+
+      // Determine if this is ALGO -> HACK or HACK -> ALGO
+      const isAlgoToHack = params.assetIn === 0; // ALGO has asset ID 0
+
+      if (isAlgoToHack) {
+        // ALGO -> HACK swap: Send ALGO payment to contract
+        const paymentTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+          sender: wallet.address,
+          receiver: algosdk.getApplicationAddress(contractConfig.poolAppId),
+          amount: params.amountIn,
+          suggestedParams
+        });
+        transactions.push(paymentTxn);
+      } else {
+        // HACK -> ALGO swap: Send HACK asset to contract
+        const assetTransferTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
+          sender: wallet.address,
+          receiver: algosdk.getApplicationAddress(contractConfig.poolAppId),
+          amount: params.amountIn,
+          assetIndex: params.assetIn,
+          suggestedParams
+        });
+        transactions.push(assetTransferTxn);
+      }
+
       // Create application call transaction for swap
       const appCallTxn = algosdk.makeApplicationCallTxnFromObject({
         sender: wallet.address,
@@ -163,18 +188,25 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
         foreignAssets: [params.assetIn, params.assetOut].filter(id => id !== 0),
         suggestedParams
       });
+      transactions.push(appCallTxn);
 
-      // Sign and send transaction
-      const signedTxns = await peraWallet.signTransaction([[{ txn: appCallTxn, signers: [wallet.address] }]]);
-      const response = await algodClient.sendRawTransaction(signedTxns[0]).do();
+      // Group transactions
+      const groupedTxns = algosdk.assignGroupID(transactions);
+
+      // Prepare transactions for signing
+      const txnsToSign = groupedTxns.map(txn => ({ txn, signers: [wallet.address!] }));
+
+      // Sign and send transaction group
+      const signedTxns = await peraWallet.signTransaction([txnsToSign]);
+      const response = await algodClient.sendRawTransaction(signedTxns).do();
       const txId = response.txid;
 
       // Wait for confirmation
       await algosdk.waitForConfirmation(algodClient, txId, 4);
-      
+
       // Refresh pool state and wallet balance
       await refreshPoolState();
-      
+
       return { success: true, txId };
     } catch (error) {
       console.error('Swap error:', error);

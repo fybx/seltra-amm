@@ -17,6 +17,8 @@ from algopy import (
     Bytes,
     arc4,
     subroutine,
+    Txn,
+    itxn,
 )
 from algopy.arc4 import abimethod
 
@@ -208,14 +210,17 @@ class SeltraPoolCore(ARC4Contract):
         is_y_to_x = (asset_in.id == self.asset_y_id and asset_out.id == self.asset_x_id)
         assert is_x_to_y or is_y_to_x, "Invalid asset pair"
         
-        # Simplified swap calculation - use constant product formula
-        # In production, this would be more sophisticated
+        # Improved swap calculation with proper pricing
         fee_amount = (amount_in * self.current_fee_rate) // UInt64(10000)
         amount_in_after_fee = amount_in - fee_amount
-        
-        # Simple constant product: x * y = k
-        # For simplicity, assume equal reserves
-        amount_out = amount_in_after_fee // UInt64(2)  # Simplified calculation
+
+        # Calculate output based on current price and liquidity
+        if is_x_to_y:  # ALGO -> HACK
+            # Convert ALGO to HACK using current price (HACK per ALGO)
+            amount_out = (amount_in_after_fee * self.current_price) // UInt64(1_000_000)
+        else:  # HACK -> ALGO
+            # Convert HACK to ALGO using inverse price
+            amount_out = (amount_in_after_fee * UInt64(1_000_000)) // self.current_price
         
         # Validate slippage protection
         assert amount_out >= min_amount_out, "Slippage exceeded"
@@ -226,7 +231,22 @@ class SeltraPoolCore(ARC4Contract):
         else:
             new_price = self.current_price - (amount_in // UInt64(1000))
             self.current_price = new_price if new_price > UInt64(0) else UInt64(1)
-        
+
+        # Execute asset transfers via inner transactions
+        if is_x_to_y:  # ALGO -> HACK
+            # Transfer HACK tokens to user
+            itxn.AssetTransfer(
+                xfer_asset=asset_out,
+                asset_receiver=Txn.sender,
+                asset_amount=amount_out,
+            ).submit()
+        else:  # HACK -> ALGO
+            # Transfer ALGO to user
+            itxn.Payment(
+                receiver=Txn.sender,
+                amount=amount_out,
+            ).submit()
+
         return arc4.String("Swap executed successfully")
 
     @subroutine

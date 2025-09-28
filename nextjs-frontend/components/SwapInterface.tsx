@@ -5,6 +5,8 @@ import { useWallet } from '@/providers/WalletProvider';
 import { useContract } from '@/providers/ContractProvider';
 import { SwapParams } from '@/types';
 import { getContractConfig, formatAlgoAmount, formatHackAmount, parseAlgoAmount, parseHackAmount } from '@/utils/config';
+import AssetOptIn from './AssetOptIn';
+import BalanceTracker from './BalanceTracker';
 
 const SwapInterface: React.FC = () => {
   const { wallet } = useWallet();
@@ -16,6 +18,7 @@ const SwapInterface: React.FC = () => {
   const [slippage, setSlippage] = useState('1.0');
   const [isSwapping, setIsSwapping] = useState(false);
   const [swapResult, setSwapResult] = useState<string | null>(null);
+  const [balanceRefreshTrigger, setBalanceRefreshTrigger] = useState(0);
 
   const contractConfig = getContractConfig();
 
@@ -88,6 +91,8 @@ const SwapInterface: React.FC = () => {
         setSwapResult(`Swap successful! Transaction ID: ${result.txId}`);
         setFromAmount('');
         setToAmount('');
+        // Trigger balance refresh
+        setBalanceRefreshTrigger(prev => prev + 1);
       } else {
         setSwapResult(`Swap failed: ${result.error}`);
       }
@@ -110,7 +115,15 @@ const SwapInterface: React.FC = () => {
   const canSwap = wallet.isConnected && fromAmount && toAmount && !isSwapping && poolState;
 
   return (
-    <div className="card" style={{ maxWidth: '480px', margin: '0 auto' }}>
+    <div>
+      {/* Asset Opt-in Component */}
+      <AssetOptIn onOptInComplete={() => setBalanceRefreshTrigger(prev => prev + 1)} />
+
+      {/* Balance Tracker */}
+      <BalanceTracker key={balanceRefreshTrigger} />
+
+      {/* Swap Interface */}
+      <div className="card" style={{ maxWidth: '480px', margin: '0 auto' }}>
       <div className="card-header">
         <h2 className="card-title">Swap Tokens</h2>
         <p className="card-subtitle">Exchange ALGO and HACK tokens with dynamic liquidity</p>
@@ -327,7 +340,7 @@ const SwapInterface: React.FC = () => {
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
             <span>Current Price:</span>
             <span style={{ fontWeight: '600' }}>
-              1 HACK = {(poolState.currentPrice / 1e18).toFixed(6)} ALGO
+              1 HACK = {(1 / (poolState.currentPrice / 1e6)).toFixed(6)} ALGO
             </span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
@@ -342,6 +355,7 @@ const SwapInterface: React.FC = () => {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 };

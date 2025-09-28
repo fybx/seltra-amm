@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import SwapInterface from '@/components/SwapInterface';
 import LiquidityInterface from '@/components/LiquidityInterface';
 import MarketDashboard from '@/components/MarketDashboard';
+import TransactionMonitor from '@/components/TransactionMonitor';
+import BalanceTracker from '@/components/BalanceTracker';
 import { useWallet } from '@/providers/WalletProvider';
 import { useMarketData } from '@/providers/MarketDataProvider';
 
@@ -141,6 +143,16 @@ export default function HomePage() {
         {activeTab === 'analytics' && <MarketDashboard />}
       </div>
 
+      {/* Grafik Arayüz Bileşenleri */}
+      <div style={{ display: 'flex', gap: '24px', marginTop: '32px' }}>
+        <div style={{ flex: 1 }}>
+          <BalanceTracker />
+        </div>
+      </div>
+
+      {/* Transaction Monitor - Floating */}
+      <TransactionMonitor />
+
       {/* Features Section */}
       <div style={{ marginTop: '64px' }}>
         <h2 style={{
@@ -228,6 +240,9 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+
+      {/* Transaction Monitor */}
+      <TransactionMonitor />
     </div>
   );
 }

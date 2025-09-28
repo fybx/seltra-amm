@@ -1,8 +1,9 @@
 {
   "network": "testnet",
   "deployer_address": "54UCMUXNEZFQJEJR2HMTKJUKQJHZAOJDCLI2NGYKNYJK3S2ZHFIF3OXR44",
-  "pool_app_id": 746543120,
+  "pool_app_id": 746545814,
   "asset_x_id": 0,
-  "asset_y_id": 746543115,
-  "deployment_time": 1759056377
+  "asset_y_id": 746545813,
+  "deployment_time": 1759059892,
+  "contract_type": "SeltraPoolCore"
 }
