@@ -5,12 +5,25 @@ API routes for the Seltra Market Simulator.
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import List, Dict, Optional, Tuple
+import sys
+import os
+
+# Add the contracts directory to the path
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../contracts/refactored'))
 
 # Import will be resolved at runtime when the module is loaded
 # This avoids circular imports since main.py imports this file
 
-
 router = APIRouter()
+
+# Initialize backend service for contract integration
+try:
+    from backend_service import SeltraBackendService
+    backend_service = SeltraBackendService()
+    CONTRACT_INTEGRATION_AVAILABLE = True
+except Exception as e:
+    print(f"Warning: Contract integration not available: {e}")
+    CONTRACT_INTEGRATION_AVAILABLE = False
 
 
 class ScenarioRequest(BaseModel):
@@ -448,4 +461,151 @@ async def trigger_demo_scenario(scenario_name: str):
     return {
         "message": f"Demo scenario '{scenario_name}' activated",
         "configuration": config
+    }
+
+
+# Contract Integration Endpoints
+
+class SwapRequest(BaseModel):
+    userAddress: str
+    assetIn: int
+    assetOut: int
+    amountIn: int
+    minAmountOut: int = 0
+
+
+@router.get("/contract-metrics")
+async def get_contract_metrics():
+    """Get comprehensive metrics from deployed contracts and backend service."""
+    if not CONTRACT_INTEGRATION_AVAILABLE:
+        raise HTTPException(status_code=503, detail="Contract integration not available")
+    
+    try:
+        metrics = backend_service.get_contract_metrics()
+        return metrics
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get contract metrics: {str(e)}")
+
+
+@router.post("/execute-swap")
+async def execute_swap(request: SwapRequest):
+    """Execute a swap on the deployed contracts."""
+    if not CONTRACT_INTEGRATION_AVAILABLE:
+        raise HTTPException(status_code=503, detail="Contract integration not available")
+    
+    try:
+        # For demo purposes, we'll simulate the swap
+        # In a real implementation, this would call the contract client
+        from simulation.main import get_simulator
+        simulator = get_simulator()
+        
+        if not simulator:
+            raise HTTPException(status_code=503, detail="Simulator not available")
+        
+        # Simulate swap execution
+        current_price = simulator.get_current_price()
+        if request.assetIn == 0:  # ALGO to HACK
+            amount_out = int(request.amountIn * 1000000 / current_price)  # Convert to HACK
+        else:  # HACK to ALGO
+            amount_out = int(request.amountIn * current_price / 1000000)  # Convert to ALGO
+        
+        # Generate a mock transaction ID
+        import time
+        tx_id = f"SWAP_{int(time.time())}_{request.userAddress[:8]}"
+        
+        return {
+            "transactionId": tx_id,
+            "amountOut": amount_out,
+            "priceImpact": 10,  # 0.1% in basis points
+            "feePaid": int(request.amountIn * 30 / 10000),  # 0.3% fee
+            "newPrice": current_price
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Swap execution failed: {str(e)}")
+
+
+@router.post("/trigger-rebalance")
+async def trigger_rebalance():
+    """Trigger liquidity rebalancing on deployed contracts."""
+    if not CONTRACT_INTEGRATION_AVAILABLE:
+        raise HTTPException(status_code=503, detail="Contract integration not available")
+    
+    try:
+        # Get current market conditions
+        from simulation.main import get_simulator
+        simulator = get_simulator()
+        
+        if not simulator:
+            raise HTTPException(status_code=503, detail="Simulator not available")
+        
+        current_price = simulator.get_current_price()
+        current_volatility = simulator.get_current_volatility()
+        
+        # Update oracle with current price
+        volatility, regime = backend_service.update_oracle(current_price)
+        
+        # Check if rebalancing is needed
+        should_rebalance, optimal_ranges, reason = backend_service.check_rebalancing(
+            current_price=current_price,
+            current_volatility=current_volatility,
+            total_liquidity=1000000.0,  # Demo value
+            current_efficiency=45.0,    # Demo value
+            time_since_last=400,        # Demo value
+            volatility_change=2.5       # Demo value
+        )
+        
+        if should_rebalance:
+            # Execute rebalance on chain
+            tx_id = await backend_service.execute_rebalance_on_chain(optimal_ranges)
+            
+            return {
+                "transactionId": tx_id,
+                "reason": reason,
+                "optimalRanges": [
+                    {
+                        "lower": r.lower,
+                        "upper": r.upper,
+                        "liquidity": r.liquidity
+                    }
+                    for r in optimal_ranges
+                ],
+                "volatilityRegime": regime
+            }
+        else:
+            return {
+                "message": "No rebalancing needed",
+                "reason": reason,
+                "volatilityRegime": regime
+            }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Rebalance failed: {str(e)}")
+
+
+@router.get("/contract-state")
+async def get_contract_state():
+    """Get current state from deployed contracts."""
+    if not CONTRACT_INTEGRATION_AVAILABLE:
+        raise HTTPException(status_code=503, detail="Contract integration not available")
+    
+    try:
+        contract_state = backend_service.sync_with_contracts()
+        return contract_state
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get contract state: {str(e)}")
+
+
+@router.get("/health")
+async def health_check():
+    """Health check endpoint for the simulation service."""
+    from simulation.main import get_simulator, get_blockchain_simulator
+    
+    simulator = get_simulator()
+    blockchain_sim = get_blockchain_simulator()
+    
+    return {
+        "status": "healthy",
+        "market_simulator": simulator is not None,
+        "blockchain_simulator": blockchain_sim is not None,
+        "contract_integration": CONTRACT_INTEGRATION_AVAILABLE,
+        "timestamp": int(__import__("time").time())
     }

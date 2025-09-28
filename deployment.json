@@ -1,0 +1,27 @@
+{
+  "network": "localnet",
+  "deployer_address": "D3T5QSYOWI2NFLKI4GGMNJDMCH7WRK7LEEZTUVSNWBKYHHYLSOKGYU5K6M",
+  "deployment_date": "2024-09-28",
+  "status": "deployed",
+  "contracts": {
+    "seltra_pool_core": {
+      "app_id": 1001,
+      "transaction_id": "I2JGP7OQOLSA76OE2IS2RWN6EVI2GBNAARB6WXII3FY2HMCR5J7Q",
+      "type": "application",
+      "size_bytes": 16,
+      "explorer_url": "https://lora.algokit.io/localnet/application/1001"
+    },
+    "hack_token": {
+      "asset_id": 1002,
+      "type": "asset",
+      "name": "HACK Token",
+      "explorer_url": "https://lora.algokit.io/localnet/asset/1002"
+    },
+    "volatility_oracle_state": {
+      "app_id": 1003,
+      "type": "application",
+      "explorer_url": "https://lora.algokit.io/localnet/application/1003"
+    }
+  },
+  "explorer_base": "https://lora.algokit.io/localnet"
+}

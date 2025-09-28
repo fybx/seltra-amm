@@ -1,0 +1,8 @@
+[project]
+name = "seltra-pool"
+version = "0.1.0"
+
+[project.deploy]
+localnet = "algokit project deploy --network localnet"
+testnet = "algokit project deploy --network testnet"
+mainnet = "algokit project deploy --network mainnet"
