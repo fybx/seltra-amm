@@ -46,20 +46,10 @@ services:
     ports:
       - "8000:8000"
     environment:
-<<<<<<< HEAD
-      - ALGORAND_ALGOD_ADDRESS=https://testnet-api.algonode.cloud
-      - ALGORAND_ALGOD_TOKEN=
-      - ALGORAND_INDEXER_ADDRESS=https://testnet-idx.algonode.cloud
-      - SELTRA_POOL_APP_ID=${SELTRA_POOL_APP_ID}
-      - ASSET_X_ID=${ASSET_X_ID}
-      - ASSET_Y_ID=${ASSET_Y_ID}
-      - FAUCET_PRIVATE_KEY=${FAUCET_PRIVATE_KEY}
-=======
       - ALGORAND_ALGOD_ADDRESS=http://algod:8080
       - ALGORAND_ALGOD_TOKEN=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     depends_on:
       - algod
->>>>>>> 259050cd4d53af1bb3f31488172b3bf0211c20c9
     volumes:
       - ./simulation:/app/simulation
       - ./contracts:/app/contracts
@@ -102,14 +92,7 @@ services:
     ports:
       - "3001:3001"
     environment:
-<<<<<<< HEAD
-      - VITE_SIMULATOR_URL=http://localhost:8000
-      - VITE_ALGOD_ADDRESS=http://localhost:4001
-      - VITE_ALGOD_TOKEN=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-      - VITE_INDEXER_ADDRESS=http://localhost:8980
-=======
       - VITE_SIMULATOR_URL=http://localhost:8001
->>>>>>> 259050cd4d53af1bb3f31488172b3bf0211c20c9
     volumes:
       - ./dev-frontend:/app
       - /app/node_modules
