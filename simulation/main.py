@@ -53,10 +53,8 @@ async def lifespan(app: FastAPI):
     else:
         pool_app_id = None
     
-    # Handle ASSET_X_ID (ALGO is always 0)
-    asset_x_id_str = os.getenv('ASSET_X_ID', '0')
-    asset_x_id = int(asset_x_id_str) if asset_x_id_str and asset_x_id_str.strip() else 0
-
+    asset_x_id = int(os.getenv('ASSET_X_ID', '0'))  # ALGO is always 0
+    
     asset_y_id = os.getenv('ASSET_Y_ID')  # HACK token ID
     if asset_y_id and asset_y_id.strip():
         asset_y_id = int(asset_y_id)

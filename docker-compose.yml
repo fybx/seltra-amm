@@ -1,4 +1,43 @@
 services:
+  postgres:
+    image: postgres:13-alpine
+    container_name: seltra_postgres
+    environment:
+      POSTGRES_USER: algorand
+      POSTGRES_PASSWORD: algorand
+      POSTGRES_DB: indexer
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  algod:
+    image: algorand/algod:latest
+    container_name: seltra_algod
+    ports:
+      - "4001:8080"
+      - "4002:7833"
+    environment:
+      - ALGORAND_DATA=/opt/algorand/node/data
+    volumes:
+      - algod_data:/opt/algorand/node/data
+    command: ["goal", "node", "start", "-d", "/opt/algorand/node/data"]
+
+  indexer:
+    image: algorand/indexer:latest
+    container_name: seltra_indexer
+    ports:
+      - "8980:8980"
+    depends_on:
+      - postgres
+      - algod
+    command: >
+      algorand-indexer daemon 
+      --postgres "postgresql://algorand:algorand@postgres:5432/indexer?sslmode=disable" 
+      --algod-address "algod:8080" 
+      --algod-token "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      --server "0.0.0.0:8980"
+
   market-simulator:
     build:
       context: .
@@ -7,6 +46,7 @@ services:
     ports:
       - "8000:8000"
     environment:
+<<<<<<< HEAD
       - ALGORAND_ALGOD_ADDRESS=https://testnet-api.algonode.cloud
       - ALGORAND_ALGOD_TOKEN=
       - ALGORAND_INDEXER_ADDRESS=https://testnet-idx.algonode.cloud
@@ -14,6 +54,12 @@ services:
       - ASSET_X_ID=${ASSET_X_ID}
       - ASSET_Y_ID=${ASSET_Y_ID}
       - FAUCET_PRIVATE_KEY=${FAUCET_PRIVATE_KEY}
+=======
+      - ALGORAND_ALGOD_ADDRESS=http://algod:8080
+      - ALGORAND_ALGOD_TOKEN=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    depends_on:
+      - algod
+>>>>>>> 259050cd4d53af1bb3f31488172b3bf0211c20c9
     volumes:
       - ./simulation:/app/simulation
       - ./contracts:/app/contracts
@@ -56,10 +102,20 @@ services:
     ports:
       - "3001:3001"
     environment:
+<<<<<<< HEAD
       - VITE_SIMULATOR_URL=http://localhost:8000
       - VITE_ALGOD_ADDRESS=http://localhost:4001
       - VITE_ALGOD_TOKEN=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
       - VITE_INDEXER_ADDRESS=http://localhost:8980
+=======
+      - VITE_SIMULATOR_URL=http://localhost:8001
+>>>>>>> 259050cd4d53af1bb3f31488172b3bf0211c20c9
     volumes:
       - ./dev-frontend:/app
       - /app/node_modules
+    depends_on:
+      - market-simulator
+
+volumes:
+  postgres_data:
+  algod_data:
