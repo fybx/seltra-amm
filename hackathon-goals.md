@@ -21,6 +21,14 @@ Three core innovations working together:
 
 - [ ] non-web3 part
     - [ ] simulations (volatile, normal) with "real" wallets
-    - [ ] dockerization for deployment of algorand network and our servers
+        - [x] simulation backend
+        - [x] simulation on simulated blockchain
+        - [x] dev frontend for controlling and tracking simulations
+        - [ ] simulation with actual blockchain net.
+    - [x] dockerization for deployment of algorand network and our servers
     - [ ] base for frontend
 - [ ] web3
+    - [x] seltra_pool_v2 (dumb AMM)
+        - [ ] deploy to network, use $HACK and connect to "market simulation"
+    - [ ] deployment of $HACK token for our $ALGO - $HACK pool
+    - [ ] seltra_pool (v3)
