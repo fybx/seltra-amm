@@ -86,7 +86,11 @@ class AlgorandTransactionSimulator:
         self.market_simulator = market_simulator
         
         # Initialize Algorand client
-        self.algod_client = algod.AlgodClient(algod_token, algod_address)
+        if algod_token:
+            self.algod_client = algod.AlgodClient(algod_token, algod_address)
+        else:
+            # For public nodes like AlgoNode, no token needed
+            self.algod_client = algod.AlgodClient("", algod_address)
 
         # Initialize contract client (only if we have contract IDs)
         if pool_app_id and asset_y_id:

@@ -5,32 +5,50 @@ services:
       dockerfile: simulation/Dockerfile
     container_name: seltra_simulator
     ports:
-      - "8001:8000"
+      - "8000:8000"
     environment:
-      - ALGORAND_ALGOD_ADDRESS=http://localhost:4001
-      - ALGORAND_ALGOD_TOKEN=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-      - ALGORAND_INDEXER_ADDRESS=http://localhost:8980
+      - ALGORAND_ALGOD_ADDRESS=https://testnet-api.algonode.cloud
+      - ALGORAND_ALGOD_TOKEN=
+      - ALGORAND_INDEXER_ADDRESS=https://testnet-idx.algonode.cloud
       - SELTRA_POOL_APP_ID=${SELTRA_POOL_APP_ID}
       - ASSET_X_ID=${ASSET_X_ID}
       - ASSET_Y_ID=${ASSET_Y_ID}
       - FAUCET_PRIVATE_KEY=${FAUCET_PRIVATE_KEY}
-    network_mode: host
     volumes:
       - ./simulation:/app/simulation
       - ./contracts:/app/contracts
 
-  frontend:
-    build: ./frontend
-    container_name: seltra_frontend
+  # frontend:
+  #   build: ./frontend
+  #   container_name: seltra_frontend
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - REACT_APP_ALGOD_ADDRESS=http://localhost:4001
+  #     - REACT_APP_ALGOD_TOKEN=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  #     - REACT_APP_SIMULATOR_ADDRESS=http://localhost:8001
+  #   volumes:
+  #     - ./frontend:/app
+  #     - /app/node_modules
+
+  nextjs-frontend:
+    build: ./nextjs-frontend
+    container_name: seltra_nextjs_frontend
     ports:
       - "3000:3000"
     environment:
-      - REACT_APP_ALGOD_ADDRESS=http://localhost:4001
-      - REACT_APP_ALGOD_TOKEN=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-      - REACT_APP_SIMULATOR_ADDRESS=http://localhost:8001
+      - NEXT_PUBLIC_NETWORK=testnet
+      - NEXT_PUBLIC_ALGOD_ADDRESS=https://testnet-api.algonode.cloud
+      - NEXT_PUBLIC_ALGOD_TOKEN=
+      - NEXT_PUBLIC_INDEXER_ADDRESS=https://testnet-idx.algonode.cloud
+      - NEXT_PUBLIC_SELTRA_POOL_APP_ID=${SELTRA_POOL_APP_ID}
+      - NEXT_PUBLIC_ASSET_X_ID=${ASSET_X_ID}
+      - NEXT_PUBLIC_ASSET_Y_ID=${ASSET_Y_ID}
+      - NEXT_PUBLIC_SIMULATOR_ADDRESS=http://localhost:8000
     volumes:
-      - ./frontend:/app
+      - ./nextjs-frontend:/app
       - /app/node_modules
+      - /app/.next
 
   dev-frontend:
     build: ./dev-frontend
@@ -38,7 +56,7 @@ services:
     ports:
       - "3001:3001"
     environment:
-      - VITE_SIMULATOR_URL=http://localhost:8001
+      - VITE_SIMULATOR_URL=http://localhost:8000
       - VITE_ALGOD_ADDRESS=http://localhost:4001
       - VITE_ALGOD_TOKEN=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
       - VITE_INDEXER_ADDRESS=http://localhost:8980

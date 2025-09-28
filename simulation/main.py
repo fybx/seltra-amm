@@ -53,20 +53,22 @@ async def lifespan(app: FastAPI):
     else:
         pool_app_id = None
     
-    asset_x_id = int(os.getenv('ASSET_X_ID', '0'))  # ALGO is always 0
-    
+    # Handle ASSET_X_ID (ALGO is always 0)
+    asset_x_id_str = os.getenv('ASSET_X_ID', '0')
+    asset_x_id = int(asset_x_id_str) if asset_x_id_str and asset_x_id_str.strip() else 0
+
     asset_y_id = os.getenv('ASSET_Y_ID')  # HACK token ID
     if asset_y_id and asset_y_id.strip():
         asset_y_id = int(asset_y_id)
     else:
         asset_y_id = None
-        
+
     faucet_private_key = os.getenv('FAUCET_PRIVATE_KEY')
 
-    # Convert string IDs to integers
+    # Convert string IDs to integers (already handled above)
     try:
         pool_app_id = int(pool_app_id) if pool_app_id else None
-        asset_x_id = int(asset_x_id)
+        # asset_x_id already converted
         asset_y_id = int(asset_y_id) if asset_y_id else None
     except (ValueError, TypeError):
         logger.warning("Invalid contract IDs in environment variables, using None")

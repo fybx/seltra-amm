@@ -1,5 +1,8 @@
 {
-  "test": true,
-  "timestamp": 1234567890,
-  "status": "test"
+  "network": "testnet",
+  "deployer_address": "54UCMUXNEZFQJEJR2HMTKJUKQJHZAOJDCLI2NGYKNYJK3S2ZHFIF3OXR44",
+  "pool_app_id": 746540397,
+  "asset_x_id": 0,
+  "asset_y_id": 746540383,
+  "deployment_time": 1759053178
 }
