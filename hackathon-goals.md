@@ -30,5 +30,5 @@ Three core innovations working together:
 - [ ] web3
     - [x] seltra_pool_v2 (dumb AMM)
         - [ ] deploy to network, use $HACK and connect to "market simulation"
-    - [ ] deployment of $HACK token for our $ALGO - $HACK pool
+    - [x] deployment of $HACK token for our $ALGO - $HACK pool
     - [ ] seltra_pool (v3)

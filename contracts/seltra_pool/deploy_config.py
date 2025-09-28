@@ -4,7 +4,7 @@ import algokit_utils
 from algosdk.v2client.algod import AlgodClient
 from algosdk.v2client.indexer import IndexerClient
 
-from smart_contracts.seltra_pool.contract import SeltraPoolContract
+# from smart_contracts.seltra_pool.contract import SeltraPoolContract  # Not needed for deployment
 
 logger = logging.getLogger(__name__)
 
@@ -13,9 +13,9 @@ logger = logging.getLogger(__name__)
 def deploy(
     algod_client: AlgodClient,
     indexer_client: IndexerClient,
-    app_spec: algokit_utils.ApplicationSpecification,
+    app_spec: algokit_utils.Arc56Contract,
     deployer: algokit_utils.Account,
-) -> None:
+) -> algokit_utils.AppClient:
     from algokit_utils.config import config
 
     config.configure(
@@ -23,9 +23,10 @@ def deploy(
         # trace_all=True,  # uncomment for detailed logging
     )
 
-    app_client = algokit_utils.ApplicationClient(
-        algod_client,
+    # Create AppClient with correct parameters for current AlgoKit Utils version
+    app_client = algokit_utils.AppClient(
         app_spec,
+        algod_client,
         creator=deployer,
         indexer_client=indexer_client,
     )

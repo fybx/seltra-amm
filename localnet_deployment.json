@@ -1,0 +1,19 @@
+{
+  "hack_token": {
+    "asset_id": 1008,
+    "txn_id": "YQZPUK3URUXHUVNPNWJEVJ6C5Y2Q65SIQSGD5Q5TF5F2DDATYLVA",
+    "deployer": "IIWY2FIVL2DESFIH66NI4XR6NP7POSOXSPOB23Z5MJVTGYUBOMPDNLYYIA"
+  },
+  "seltra_pool": {
+    "app_id": 1000,
+    "address": "SELTRA_POOL_ADDRESS_PLACEHOLDER",
+    "deployer": "IIWY2FIVL2DESFIH66NI4XR6NP7POSOXSPOB23Z5MJVTGYUBOMPDNLYYIA"
+  },
+  "pool_config": {
+    "asset_a": 0,
+    "asset_b": 1008,
+    "initial_price": 1000000
+  },
+  "timestamp": 1759026971,
+  "network": "localnet"
+}

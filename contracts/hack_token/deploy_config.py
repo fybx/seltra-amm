@@ -219,9 +219,9 @@ def deploy(
     """
     deployer_instance = HACKTokenDeployer(algod_client, indexer_client)
     
-    # Deploy token (this is synchronous, but we'll keep the async pattern for consistency)
-    import asyncio
-    asset_id, txn_id = asyncio.run(deployer_instance.deploy_hack_token(deployer))
+    # Deploy token (convert async method to sync)
+    # Since deploy_hack_token is async but we need sync, let's create a sync version
+    asset_id, txn_id = _deploy_hack_token_sync(deployer_instance, deployer)
     
     # Verify deployment
     if deployer_instance.verify_deployment(asset_id, deployer.address):
@@ -232,3 +232,54 @@ def deploy(
         logger.error("❌ HACK token deployment verification failed")
     
     return asset_id, txn_id
+
+
+def _deploy_hack_token_sync(deployer_instance: HACKTokenDeployer, deployer: algokit_utils.Account) -> Tuple[int, str]:
+    """Synchronous wrapper for the async deploy_hack_token method."""
+    try:
+        # Get suggested parameters
+        params = deployer_instance.algod_client.suggested_params()
+        
+        # Set management addresses to creator address
+        creator_address = deployer.address
+        
+        # Create ASA transaction
+        from algosdk.transaction import AssetCreateTxn, wait_for_confirmation
+        asset_create_txn = AssetCreateTxn(
+            sender=creator_address,
+            sp=params,
+            total=deployer_instance.token_config["total_supply"],
+            default_frozen=deployer_instance.token_config["default_frozen"],
+            unit_name=deployer_instance.token_config["unit_name"],
+            asset_name=deployer_instance.token_config["name"],
+            manager=creator_address,  # Can modify token properties
+            reserve=creator_address,  # Can mint/burn tokens
+            freeze=creator_address,   # Can freeze accounts
+            clawback=creator_address, # Can clawback tokens
+            url=deployer_instance.token_config["url"],
+            decimals=deployer_instance.token_config["decimals"]
+        )
+        
+        # Sign transaction
+        signed_txn = asset_create_txn.sign(deployer.private_key)
+        
+        # Submit transaction
+        txn_id = deployer_instance.algod_client.send_transaction(signed_txn)
+        
+        # Wait for confirmation
+        result = wait_for_confirmation(deployer_instance.algod_client, txn_id, 4)
+        asset_id = result['asset-index']
+        
+        logger.info(f"✅ HACK token created successfully!")
+        logger.info(f"Asset ID: {asset_id}")
+        logger.info(f"Transaction ID: {txn_id}")
+        logger.info(f"Creator: {creator_address}")
+        
+        # Log token details
+        deployer_instance._log_token_details(asset_id, creator_address)
+        
+        return asset_id, txn_id
+        
+    except Exception as e:
+        logger.error(f"❌ Failed to deploy HACK token: {e}")
+        raise

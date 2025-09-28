@@ -44,10 +44,49 @@ async def lifespan(app: FastAPI):
     )
     
     # Initialize blockchain simulator with market simulator reference
+    # Load configuration from environment variables
+    import os
+
+    pool_app_id = os.getenv('SELTRA_POOL_APP_ID')
+    if pool_app_id and pool_app_id.strip():
+        pool_app_id = int(pool_app_id)
+    else:
+        pool_app_id = None
+    
+    asset_x_id = int(os.getenv('ASSET_X_ID', '0'))  # ALGO is always 0
+    
+    asset_y_id = os.getenv('ASSET_Y_ID')  # HACK token ID
+    if asset_y_id and asset_y_id.strip():
+        asset_y_id = int(asset_y_id)
+    else:
+        asset_y_id = None
+        
+    faucet_private_key = os.getenv('FAUCET_PRIVATE_KEY')
+
+    # Convert string IDs to integers
+    try:
+        pool_app_id = int(pool_app_id) if pool_app_id else None
+        asset_x_id = int(asset_x_id)
+        asset_y_id = int(asset_y_id) if asset_y_id else None
+    except (ValueError, TypeError):
+        logger.warning("Invalid contract IDs in environment variables, using None")
+        pool_app_id = None
+        asset_x_id = 0  # ALGO
+        asset_y_id = None
+
+    logger.info(f"📋 Loaded configuration:")
+    logger.info(f"   Pool App ID: {pool_app_id}")
+    logger.info(f"   Asset X ID (ALGO): {asset_x_id}")
+    logger.info(f"   Asset Y ID (HACK): {asset_y_id}")
+
     blockchain_simulator = AlgorandTransactionSimulator(
         algod_address="http://algod:8080",  # Use docker service name
         num_wallets=20,
-        market_simulator=simulator  # Pass market simulator for volatility sync
+        market_simulator=simulator,  # Pass market simulator for volatility sync
+        pool_app_id=pool_app_id,
+        asset_x_id=asset_x_id,
+        asset_y_id=asset_y_id,
+        faucet_private_key=faucet_private_key
     )
     
     try:
@@ -74,6 +113,7 @@ async def lifespan(app: FastAPI):
             simulator.stop_simulation()
         if blockchain_simulator:
             blockchain_simulator.stop_simulation()
+            await blockchain_simulator.cleanup()
         
         # Cancel background tasks
         market_task.cancel()
@@ -118,7 +158,7 @@ async def health_check():
         "market_simulator_active": simulator.is_running if simulator else False,
         "blockchain_simulator_active": blockchain_simulator.is_running if blockchain_simulator else False,
         "current_price": simulator.get_current_price() if simulator else None,
-        "total_wallets": len(blockchain_simulator.wallets) if blockchain_simulator else 0
+        "total_wallets": len(blockchain_simulator.wallet_manager.wallets) if blockchain_simulator and blockchain_simulator.wallet_manager else 0
     }
 
 
